@@ -9,6 +9,8 @@ export const theme = {
     textColorDark: "#000000",
     border: "#E69023",
     white: "#ffffff",
+
+    mainColor: "#0943ef",
   },
   fontSize: {
     h1: "1.2rem",
