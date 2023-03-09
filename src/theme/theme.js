@@ -8,9 +8,10 @@ export const theme = {
     textColorActive: "#E69023",
     textColorDark: "#000000",
     border: "#E69023",
-    white: "#ffffff",
 
     mainColor: "#0943ef",
+    black: "#000000",
+    white: "#ffffff",
   },
   fontSize: {
     h1: "1.2rem",
