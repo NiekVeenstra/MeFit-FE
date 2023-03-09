@@ -12,6 +12,7 @@ function App() {
       {keycloak.authenticated && <ApplicationFrame />}
       <Routes>
         <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<div>home</div>} />
         <Route
           path="/user"
           element={
