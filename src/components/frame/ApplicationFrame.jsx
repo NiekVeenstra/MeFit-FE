@@ -33,7 +33,6 @@ const ApplicationFrame = () => {
     <StyledApplicationFrameContainer>
       <h1>MeFit</h1>
       {screenWidth > 400 && <h3>{userName}</h3>}
-
       <DropdownMenu />
     </StyledApplicationFrameContainer>
   );
