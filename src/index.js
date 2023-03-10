@@ -5,6 +5,7 @@ import { GlobalStyle, theme } from "./theme/theme";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import Demo from './components/SetGoals';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
