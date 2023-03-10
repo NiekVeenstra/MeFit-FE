@@ -4,9 +4,9 @@ import DaysLeft from './DaysLeft'
 
 const GoalsInfo = () => {
     return (
-        <div>GoalsInfo
+        <div Style="border: solid 3px black; width: 700px;">GoalsInfo
             <div>How many goals this week</div>
-            <div>Count down days left<DaysLeft /></div>
+            <div Style="border: solid 3px black; width: 200px;">Count down days left <DaysLeft /></div>
             <div><Calendar /></div>
         </div>
     )

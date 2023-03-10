@@ -6,13 +6,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 export default function DateCalendarValue() {
-    const [value, setValue] = React.useState(dayjs('2022-04-17'));
+    const [value, setValue] = React.useState(dayjs(Date.now()));
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateCalendar', 'DateCalendar']}>
-                <DemoItem label="Uncontrolled calendar">
-                    <DateCalendar defaultValue={dayjs('2022-04-17')} />
+                <DemoItem label="Calendar">
+                    <DateCalendar defaultValue={dayjs(Date.now())} />
                 </DemoItem>
             </DemoContainer>
         </LocalizationProvider>
