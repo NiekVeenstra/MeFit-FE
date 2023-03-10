@@ -9,10 +9,10 @@ export default function DateCalendarValue() {
     const [value, setValue] = React.useState(dayjs(Date.now()));
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DateCalendar', 'DateCalendar']}>
-                <DemoItem label="Calendar">
-                    <DateCalendar defaultValue={dayjs(Date.now())} />
+        <LocalizationProvider Style="width: 30%;" dateAdapter={AdapterDayjs}>
+            <DemoContainer Style="width: 30%;" components={['DateCalendar', 'DateCalendar']}>
+                <DemoItem Style="width: 30%;" label="Calendar">
+                    <DateCalendar Style="width: 30%;" defaultValue={dayjs(Date.now())} />
                 </DemoItem>
             </DemoContainer>
         </LocalizationProvider>

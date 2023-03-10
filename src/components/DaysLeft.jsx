@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import * as ReactDOM from "https://cdn.skypack.dev/react-dom@17.0.1";
 
 const DaysLeft = () => {
     const [days, setDays] = useState(0);
@@ -26,7 +25,7 @@ const DaysLeft = () => {
   font-weight: 400;
   padding: 10px;">
                     <p id="day">{days < 10 ? "0" + days : days}</p>
-                    <span className="text">Days</span>
+
                 </div>
             </div>
         </div>
