@@ -13,7 +13,7 @@ export default function DateCalendarValue() {
       <DemoContainer components={["DateCalendar", "DateCalendar"]}>
         <DemoItem label="Calendar">
           <DateCalendar
-            style={{width: "20rem", border:"solid red 2px"}}
+            style={{ width: "20rem", border: "solid blue 2px" }}
             defaultValue={dayjs(Date.now())}
           />
         </DemoItem>
