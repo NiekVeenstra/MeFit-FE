@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import keycloak from "../../keycloak";
 import styled from "styled-components";
 import LoginInterface from "../../components/loginInterface/LoginInterface";
-import { checkForUser } from "../../api/testing/user";
+import { getUsers } from "../../api/testing/user";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ const LoginPage = () => {
           </StyledParagraph>
           <LoginInterface />
           <StyledLinkContainer>Terms of Use - Help - Privacy Policy</StyledLinkContainer>
-          <button onClick={()=> {checkForUser(1)}}>test check</button>
+          <button onClick={()=> {getUsers()}}>test check</button>
         </StyledLoginPage>
       )}
     </>
