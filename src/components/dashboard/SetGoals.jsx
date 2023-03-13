@@ -8,7 +8,7 @@ const SetGoals = () => {
     let userData = {
         userID: "user001",
         userName: "John Doe",
-        // userWorkouts:[],
+        // userWorkouts: []
         userWorkouts: [{
             workoutName: "Workout 01",
             workoutCompletion: true,
@@ -25,7 +25,7 @@ const SetGoals = () => {
             return (
                 <div>
                     <h3>You have no workouts yet!</h3>
-                    <Button />
+                    <h6>Add your goals: <Button /></h6>
                 </div>
             )
         } else {
@@ -49,28 +49,28 @@ const SetGoals = () => {
         }
     }
 
-function GoalList(props) {
-  const [showDetails, setShowDetails] = useState(false);
+    function GoalList(props) {
+        const [showDetails, setShowDetails] = useState(false);
 
-  // your code for rendering the list of goals goes here
+        // your code for rendering the list of goals goes here
 
-  return (
-    <div>
-      <button onClick={() => setShowDetails(true)}>Show details</button>
-      {showDetails && (
-        <div>
-          {/* your code for rendering the details of all goals goes here */}
-          <p>PERIOD: {days}.</p>
-                <p>Status: {status}.</p>
-                <p>  All workouts for the goal, completed and pending</p>
-                 <p>The reference to the users previously achieved goals</p>
+        return (
+            <div>
+                <button onClick={() => setShowDetails(!showDetails)}>Show details</button>
+                {showDetails && (
+                    <div>
+                        {/* your code for rendering the details of all goals goes here */}
+                        <p>PERIOD: {days}.</p>
+                        <p>Status: {status}.</p>
+                        <p>  All workouts for the goal, completed and pending</p>
+                         <p>The reference to the users previously achieved goals</p>
 
-                 <p>A interaction to allow the user to log completed workouts for the current goal</p>
-        </div>
-      )}
-    </div>
-  );
-}
+                         <p>A interaction to allow the user to log completed workouts for the current goal</p>
+                    </div>
+                )}
+            </div>
+        );
+    }
 
 
     // show completed workout
@@ -102,7 +102,7 @@ function GoalList(props) {
                 {/* <ShowCompletedWorkouts /> */}
 
                 <GoalList />
-                
+
             </div>
         </div>
     )

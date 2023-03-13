@@ -6,7 +6,7 @@ import Calendar from '../dashboard/Calendar'
 import ProgressBar from '../dashboard/ProgressBar'
 import DaysLeft from '../dashboard/DaysLeft'
 import SetGoals from '../dashboard/SetGoals'
-import Title from '../title'
+// import Title from '../title'
 
 
 

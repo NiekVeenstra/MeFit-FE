@@ -10,7 +10,7 @@ const Button = () => {
     };
     return (
         <button onClick={handleClick}>
-            {click ? "click" : 'not clicked'}
+            {click ? "clicked" : 'not clicked'}
         </button>
     );
 }

@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-const ProgressBar = () => {
+const GoalProgress = ({ progress }) => {
   return (
-    <div>ProgressBar</div>
-  )
-}
+    <div>
+      <h3>Goal Progress: {progress}%</h3>
+      <progress value={progress} max="100" />
+    </div>
+  );
+};
+export default GoalProgress;
 
-export default ProgressBar
