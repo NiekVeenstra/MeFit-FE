@@ -15,12 +15,10 @@ const GoalsDashboard = () => {
   return (
     <div>
       <h2>Goals Dashboard</h2>
-      <Title
-        title={"Meg is great!"}
-        subtitle={"this is the subtitle"} />
       <Calendar />
       <ProgressBar />
       <DaysLeft />
+      <h3> Your Goals:</h3>
       <SetGoals />
     </div>
   )

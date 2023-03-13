@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const DaysLeft = () => {
   const [days, setDays] = useState(0);
-  const deadline = "March, 17, 2023";
+  const deadline = "March, 20, 2023";
   const getTime = () => {
     const time = Date.parse(deadline) - Date.now();
     setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
