@@ -28,8 +28,29 @@ export const getUser = async (id) => {
   }
 };
 
-export const postUser = () => {
-    console.log("there is no user sorry");
+export const postUser = async (keycloakData) => {
+  try {
+    const response = await fetch(apiUrl, {
+      method: "PATCH",
+      headers: createHeaders(),
+      body: JSON.stringify({
+        id,
+        email,
+        password,
+        firstName,
+        lastName,
+        isContributor,
+        isAdmin,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("could not create user with username");
+    }
+    const data = await response.json();
+    return [null, data];
+  } catch (error) {
+    return [error.message, []];
+  }
 };
 
 export const loginUser = async (id) => {
