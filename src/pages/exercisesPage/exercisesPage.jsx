@@ -6,7 +6,7 @@ import { set } from "react-hook-form";
 
 const ExercisesPage = () => {
     const [bodyPart, setBodyPart] = useState('all');
-    const [exercises, setExercises] = useState([]);
+    const [exercises, setExercises] = useState([]); 
 
     return (
         <div>

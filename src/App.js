@@ -5,6 +5,7 @@ import { ROLES } from "./const/roles";
 import keycloak from "./keycloak";
 import AdminPage from "./pages/adminPage/AdminPage";
 import LoginPage from "./pages/loginPage/LoginPage";
+// import ExercisesPage from "./pages/exercisesPage/ExercisesPage";
 import ExercisesPage from "./pages/exercisesPage/ExercisesPage";
 import ExerciseDetailPage from "./pages/exerciseDetailPage/ExerciseDetailPage";
 import KeycloakRoute from "./routes/KeycloakRoute";
