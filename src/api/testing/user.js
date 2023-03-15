@@ -1,3 +1,4 @@
+import { createHeaders } from "./index";
 const apiUrl = process.env.REACT_APP_API_USERS;
 
 export const getUsers = async () => {
@@ -16,13 +17,13 @@ export const getUsers = async () => {
 
 export const getUser = async (id) => {
   try {
-    const response = await fetch(`${apiUrl}?id=${id}`);
+    const response = await fetch(`${apiUrl}/${id}`);
     if (!response.ok) {
       throw new Error(`could not complete request`);
     }
     const data = await response.json();
     console.log(data);
-    return [null, data];
+    return data;
   } catch (error) {
     return [error.message, []];
   }
@@ -31,20 +32,15 @@ export const getUser = async (id) => {
 export const postUser = async (keycloakData) => {
   try {
     const response = await fetch(apiUrl, {
-      method: "PATCH",
+      method: "POST",
       headers: createHeaders(),
-      body: JSON.stringify({
-        id,
-        email,
-        password,
-        firstName,
-        lastName,
-        isContributor,
-        isAdmin,
-      }),
+      body: JSON.stringify(keycloakData),
     });
     if (!response.ok) {
-      throw new Error("could not create user with username");
+      console.error("Error status:", response.status);
+      const errorText = await response.text();
+      console.error("Error message:", errorText);
+      throw new Error("Could not create user with username");
     }
     const data = await response.json();
     return [null, data];
@@ -53,11 +49,9 @@ export const postUser = async (keycloakData) => {
   }
 };
 
-export const loginUser = async (id) => {
-  const [checkError, userId] = await getUser(id);
-  if(userId.length > 0) {
-    return [null, userId.pop()]
+export const loginUser = async (keycloakData) => {
+  const user = await getUser(keycloakData.id);
+  if (user.id == null) {
+    return await postUser(keycloakData);
   }
-
-  const [createError, newUer] = postUser();
 };
