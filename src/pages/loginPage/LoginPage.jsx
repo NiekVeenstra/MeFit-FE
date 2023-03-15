@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import keycloak from "../../keycloak";
+import decode from "jwt-decode";
 import styled from "styled-components";
 import LoginInterface from "../../components/loginInterface/LoginInterface";
-import { checkForUser } from "../../api/testing/user";
+import { getUser, getUsers, loginUser, postUser } from "../../api/testing/user";
+import { useUser } from "../../context/UserContext";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -14,31 +16,80 @@ const StyledLoginPage = styled.div`
   border: solid red 1px;
 `;
 
-const StyledHeader = styled.h1``;
-
 const StyledParagraph = styled.p``;
 
 const StyledLinkContainer = styled.div``;
 
 const LoginPage = () => {
+  // const [keycloakData, setKeycloakData] = useState({
+  //   id: 0,
+  //   email: "",
+  //   firstName: "",
+  //   lastName: "",
+  //   isContributor: false,
+  //   isAdmin: false,
+  // });
+  const { user, setUser } = useUser({
+    id: 0,
+    email: "",
+    firstName: "",
+    lastName: "",
+    isContributor: false,
+    isAdmin: false,
+  });
+
   useEffect(() => {
-    {
-      !keycloak.authenticated && keycloak.login();
-    }
-  }, []);
+    !keycloak.authenticated && keycloak.login();
+    const decodedToken = decode(keycloak.token);
+    // setKeycloakData({
+    setUser({
+      id: decodedToken.sid,
+      email: decodedToken.email,
+      firstName: decodedToken.given_name,
+      lastName: decodedToken.family_name,
+      isContributor: false,
+      isAdmin: false,
+    });
+  }, [setUser]);
 
   return (
     <>
       {keycloak.authenticated && (
         <StyledLoginPage>
-          <StyledHeader>MeFit</StyledHeader>
           <StyledParagraph>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsa voluptates ut
             facilis odit ab fugit distinctio sunt aliquid eius?
           </StyledParagraph>
           <LoginInterface />
           <StyledLinkContainer>Terms of Use - Help - Privacy Policy</StyledLinkContainer>
-          <button onClick={()=> {checkForUser(1)}}>test check</button>
+          <button
+            onClick={() => {
+              getUsers();
+            }}
+          >
+            get users
+          </button>
+          <button
+            onClick={() => {
+              getUser(user.id);
+            }}
+          >
+            get user
+          </button>
+          <button
+            onClick={() => {
+              postUser(user);
+            }}
+          >
+            post user
+          </button>
+          <button
+            onClick={() => {
+              loginUser(user);
+            }}
+          >
+            login button
+          </button>
         </StyledLoginPage>
       )}
     </>
