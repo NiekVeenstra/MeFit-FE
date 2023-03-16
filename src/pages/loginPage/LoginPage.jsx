@@ -3,7 +3,7 @@ import keycloak from "../../keycloak";
 import decode from "jwt-decode";
 import styled from "styled-components";
 import LoginInterface from "../../components/loginInterface/LoginInterface";
-import { getUser, getUsers, loginUser, postUser } from "../../api/testing/user";
+import { getUser, getUsers, loginUser, postUser } from "../../api/userKeycloak/user";
 import { useUser } from "../../context/UserContext";
 
 const StyledLoginPage = styled.div`
