@@ -72,6 +72,11 @@ const DropdownMenu = () => {
             </NavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
+            <NavLink onClick={handleCloseMenu} to="/exercises">
+              Exercises
+            </NavLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
             <NavLink onClick={handleCloseMenu} to="/user">
               User
             </NavLink>
