@@ -9,6 +9,7 @@ import LoginPage from "./pages/loginPage/LoginPage";
 import ExercisesPage from "./pages/exercisesPage/ExercisesPage";
 import ExerciseDetailPage from "./pages/exerciseDetailPage/ExerciseDetailPage";
 import KeycloakRoute from "./routes/KeycloakRoute";
+import ProfilePage from "./pages/profilePage/ProfilePage";
 
 
 
@@ -50,6 +51,14 @@ function App() {
           element={
             <KeycloakRoute role={ROLES.Admin}>
               <AdminPage />
+            </KeycloakRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <KeycloakRoute role={ROLES.User}>
+              <ProfilePage/>
             </KeycloakRoute>
           }
         />
