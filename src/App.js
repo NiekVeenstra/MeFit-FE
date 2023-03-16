@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import GoalsDashboard from "./components/goalsDashboard/GoalsDashboard";
 import ApplicationFrame from "./components/frame/ApplicationFrame";
 import { ROLES } from "./const/roles";
@@ -13,9 +13,10 @@ import KeycloakRoute from "./routes/KeycloakRoute";
 
 
 function App() {
+  const location = useLocation();
   return (
     <>
-      {keycloak.authenticated && <ApplicationFrame />}
+      {keycloak.authenticated && location.pathname !== "/" && <ApplicationFrame />}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard" element={<GoalsDashboard />} />

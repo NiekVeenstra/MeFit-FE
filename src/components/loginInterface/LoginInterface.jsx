@@ -19,7 +19,7 @@ const LoginInterface = () => {
         {keycloak.token && (
           <div>
             <h4>Token</h4>
-            <pre>{keycloak.token}</pre>
+            {/* <pre>{keycloak.token}</pre> */}
             <button onClick={() => console.log(keycloak)}>check</button>
           </div>
         )}
