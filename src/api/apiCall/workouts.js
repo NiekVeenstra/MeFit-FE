@@ -1,7 +1,9 @@
+const apiUrl = process.env.REACT_APP_API_WORKOUTS;
+
 
   export const getWorkouts = async () => {
     try {
-      const response = await fetch('https://mefitapi-production.up.railway.app/api/workouts');
+      const response = await fetch(`${apiUrl}`);
       if (!response.ok) {
         throw new Error(`could not complete request`);
       }
