@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import keycloak from "../../keycloak";
 import decode from "jwt-decode";
 import styled from "styled-components";
-import LoginInterface from "../../components/loginInterface/LoginInterface";
-import { getUser, getUsers, loginUser, postUser } from "../../api/userKeycloak/user";
+import { loginUser, postUser } from "../../api/userKeycloak/user";
 import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { getUserProfile, postUserProfile } from "../../api/profile/profile";
+import { postUserProfileData } from "../../api/address/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -12,23 +14,42 @@ const StyledLoginPage = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  //height: 100vh;
-  border: solid red 1px;
+  height: calc(100vh - 3.3rem);
 `;
 
-const StyledParagraph = styled.p``;
+const StyledEnterContainer = styled.div`
+  border: solid 0.15rem ${(props) => props.theme.colors.mainColor};
+  border-radius: 15px;
+  width: 50%;
+  max-width: 25rem;
+  margin: 5rem;
+  padding: 1rem;
+  text-align: center;
+  @media (max-width: 450px) {
+    width: 100%;
+    border: none;
+  }
+`;
 
-const StyledLinkContainer = styled.div``;
+const StyledTitle = styled.h3`
+  margin-bottom: 1rem;
+`;
+
+const StyledParagraph = styled.p`
+  margin-bottom: 1rem;
+`;
+
+const StyledButton = styled.button`
+  color: ${(props) => props.theme.colors.white};
+  padding: 0.6rem;
+  border-radius: 15px;
+  width: 8rem;
+  background-color: ${(props) => props.theme.colors.mainColor};
+`;
 
 const LoginPage = () => {
-  // const [keycloakData, setKeycloakData] = useState({
-  //   id: 0,
-  //   email: "",
-  //   firstName: "",
-  //   lastName: "",
-  //   isContributor: false,
-  //   isAdmin: false,
-  // });
+  const navigate = useNavigate();
+
   const { user, setUser } = useUser({
     id: 0,
     email: "",
@@ -41,7 +62,6 @@ const LoginPage = () => {
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
-    // setKeycloakData({
     setUser({
       id: decodedToken.sid,
       email: decodedToken.email,
@@ -52,44 +72,43 @@ const LoginPage = () => {
     });
   }, [setUser]);
 
+  const handleLogin = () => {
+    loginUser(user);
+    navigate("/dashboard")
+  }
+
   return (
     <>
       {keycloak.authenticated && (
         <StyledLoginPage>
-          <StyledParagraph>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsa voluptates ut
-            facilis odit ab fugit distinctio sunt aliquid eius?
-          </StyledParagraph>
-          <LoginInterface />
-          <StyledLinkContainer>Terms of Use - Help - Privacy Policy</StyledLinkContainer>
-          <button
-            onClick={() => {
-              getUsers();
-            }}
-          >
-            get users
-          </button>
-          <button
-            onClick={() => {
-              getUser(user.id);
-            }}
-          >
-            get user
-          </button>
-          <button
-            onClick={() => {
-              postUser(user);
-            }}
-          >
-            post user
-          </button>
-          <button
-            onClick={() => {
-              loginUser(user);
-            }}
-          >
-            login button
-          </button>
+          <StyledEnterContainer>
+            <StyledTitle>Welcome</StyledTitle>
+            <StyledParagraph>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsa voluptates ut
+              facilis odit ab fugit distinctio sunt aliquid eius?
+            </StyledParagraph>
+            <StyledButton
+              onClick={() => {
+                handleLogin()
+              }}
+            >
+              Enter
+            </StyledButton>
+            <StyledButton
+              onClick={() => {
+                postUserProfile()
+              }}
+            >
+              getprofiles
+            </StyledButton>
+            <StyledButton
+              onClick={() => {
+                postUserProfileData()
+              }}
+            >
+              postUserProfileData
+            </StyledButton>
+          </StyledEnterContainer>
         </StyledLoginPage>
       )}
     </>
