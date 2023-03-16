@@ -6,6 +6,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import Loading from "./components/loading/Loading";
 import { initialize } from "./keycloak";
+import AppContext from "./context/AppContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // Display a loading screen when connecting to Keycloak
@@ -19,8 +20,10 @@ initialize()
       //<React.StrictMode>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <GlobalStyle />
-          <App />
+          <AppContext>
+            <GlobalStyle />
+            <App />
+          </AppContext>
         </BrowserRouter>
       </ThemeProvider>
       //</React.StrictMode>
