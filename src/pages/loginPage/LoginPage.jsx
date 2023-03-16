@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import keycloak from "../../keycloak";
 import decode from "jwt-decode";
 import styled from "styled-components";
-import { loginUser, postUser } from "../../api/userKeycloak/user";
+import { loginUser } from "../../api/userKeycloak/user";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { getUserProfile, postUserProfile } from "../../api/profile/profile";
-import { postUserProfileData } from "../../api/address/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -74,8 +72,8 @@ const LoginPage = () => {
 
   const handleLogin = () => {
     loginUser(user);
-    navigate("/dashboard")
-  }
+    navigate("/dashboard");
+  };
 
   return (
     <>
@@ -89,24 +87,10 @@ const LoginPage = () => {
             </StyledParagraph>
             <StyledButton
               onClick={() => {
-                handleLogin()
+                handleLogin();
               }}
             >
               Enter
-            </StyledButton>
-            <StyledButton
-              onClick={() => {
-                postUserProfile()
-              }}
-            >
-              getprofiles
-            </StyledButton>
-            <StyledButton
-              onClick={() => {
-                postUserProfileData()
-              }}
-            >
-              postUserProfileData
             </StyledButton>
           </StyledEnterContainer>
         </StyledLoginPage>
