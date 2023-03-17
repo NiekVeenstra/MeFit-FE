@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { loginUser } from "../../api/userKeycloak/user";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { postUserProfile } from "../../api/profile/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ const StyledButton = styled.button`
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { v4: uuidv4 } = require('uuid');
 
   const { user, setUser } = useUser({
     id: 0,
@@ -60,6 +62,15 @@ const LoginPage = () => {
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
+
+
+    const uuid = decodedToken.sid;
+    const uuidBuffer = uuidv4.parse(uuid);
+    const uuidBigInt = BigInt(`0x${uuidBuffer.toString('hex')}`);
+
+    console.log(uuidBigInt);
+
+
     setUser({
       id: decodedToken.sid,
       email: decodedToken.email,
@@ -74,6 +85,8 @@ const LoginPage = () => {
     loginUser(user);
     navigate("/dashboard");
   };
+
+  const test = () => {};
 
   return (
     <>
@@ -91,6 +104,13 @@ const LoginPage = () => {
               }}
             >
               Enter
+            </StyledButton>
+            <StyledButton
+              onClick={() => {
+                postUserProfile();
+              }}
+            >
+              postUserProfile
             </StyledButton>
           </StyledEnterContainer>
         </StyledLoginPage>

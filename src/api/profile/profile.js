@@ -30,18 +30,27 @@ export const getUserProfile = async (id) => {
 };
 
 export const postUserProfile = async () => {
+  const dummyData = {
+    id: 101,
+    weight: "string101",
+    height: "string101",
+    medicalConditions: "string101",
+    disabilities: "string101",
+    userId: "string101",
+    address: {
+      addressLine1: "string101",
+      addressLine2: "string101",
+      addressLine3: "string101",
+      postalCode: "string101",
+      city: "string101",
+      country: "string101",
+    },
+  };
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: createHeaders(),
-      body: JSON.stringify({
-        weight: "500",
-        height: "500",
-        medicalConditions: "test",
-        disabilities: "test",
-        userId: "111",
-        addressId: 111
-      }),
+      body: JSON.stringify(dummyData),
     });
     if (!response.ok) {
       console.error("Error status:", response.status);
@@ -50,7 +59,7 @@ export const postUserProfile = async () => {
       throw new Error("Could not create user with username");
     }
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     console.log(data.id);
     return [null, data];
   } catch (error) {
