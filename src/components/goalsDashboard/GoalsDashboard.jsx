@@ -1,22 +1,26 @@
 import React from 'react'
-import Chart from '../Chart'
-import GoalsInfo from '../GoalsInfo'
+// import Chart from '../../components/dashboard/Chart'
+// import GoalsInfo from '../dashboard/GoalsInfo'
+
+import Calendar from '../dashboard/Calendar'
+import ProgressBar from '../dashboard/ProgressBar'
+import DaysLeft from '../dashboard/DaysLeft'
+import SetGoals from '../dashboard/SetGoals'
+// import Title from '../title'
+
 
 
 
 const GoalsDashboard = () => {
   return (
-    <div>GoalsDashboard
-      <div>Progress Chart overall<Chart /></div>
-      <div>Set Goals input
-        <div>Goals in More details</div>
-      </div>
-      <div><GoalsInfo /></div>
-      <div>Progress pie this week
-        <div>Motivation text</div>
-      </div>
+    <div>
+      <h2>Goals Dashboard</h2>
+      <Calendar />
+      <ProgressBar />
+      <DaysLeft />
+      <h3> Your Goals:</h3>
+      <SetGoals />
     </div>
-
   )
 }
 
