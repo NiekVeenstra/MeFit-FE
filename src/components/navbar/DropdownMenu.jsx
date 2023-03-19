@@ -13,7 +13,6 @@ const DropdownToggle = styled.button`
   padding: 0.6rem;
   //border: 0.1rem solid ${(props) => props.theme.colors.black};
   border-radius: 15px;
-  cursor: pointer;
   width: 8rem;
   background-color: ${(props) => props.theme.colors.mainColor};
 `;
@@ -72,6 +71,11 @@ const DropdownMenu = () => {
             </NavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
+            <NavLink onClick={handleCloseMenu} to="/dashboard">
+              Dashboard
+            </NavLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
             <NavLink onClick={handleCloseMenu} to="/exercises">
               Exercises
             </NavLink>
@@ -79,6 +83,11 @@ const DropdownMenu = () => {
           <DropdownMenuItem>
             <NavLink onClick={handleCloseMenu} to="/user">
               User
+            </NavLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <NavLink onClick={handleCloseMenu} to="/profile">
+              Profile
             </NavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>

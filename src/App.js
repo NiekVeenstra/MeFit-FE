@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import GoalsDashboard from "./components/goalsDashboard/GoalsDashboard";
 import ApplicationFrame from "./components/frame/ApplicationFrame";
 import { ROLES } from "./const/roles";
@@ -9,16 +9,24 @@ import LoginPage from "./pages/loginPage/LoginPage";
 import ExercisesPage from "./pages/exercisesPage/ExercisesPage";
 import ExerciseDetailPage from "./pages/exerciseDetailPage/ExerciseDetailPage";
 import KeycloakRoute from "./routes/KeycloakRoute";
-
-
+import ProfilePage from "./pages/profilePage/ProfilePage";
 
 function App() {
+  const location = useLocation();
   return (
     <>
-      {keycloak.authenticated && <ApplicationFrame />}
+      {keycloak.authenticated && location.pathname !== "/" && <ApplicationFrame />}
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/dashboard" element={<GoalsDashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <KeycloakRoute role={ROLES.User}>
+              <GoalsDashboard />
+            </KeycloakRoute>
+          }
+        />
+
         <Route path="/home" element={<div>home</div>} />
         <Route
           path="/exercises"
@@ -52,8 +60,15 @@ function App() {
             </KeycloakRoute>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <KeycloakRoute role={ROLES.User}>
+              <ProfilePage />
+            </KeycloakRoute>
+          }
+        />
       </Routes>
-      
     </>
   );
 }
