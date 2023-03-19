@@ -29,28 +29,12 @@ export const getUserProfile = async (id) => {
   }
 };
 
-export const postUserProfile = async () => {
-  const dummyData = {
-    id: 101,
-    weight: "string101",
-    height: "string101",
-    medicalConditions: "string101",
-    disabilities: "string101",
-    userId: "string101",
-    address: {
-      addressLine1: "string101",
-      addressLine2: "string101",
-      addressLine3: "string101",
-      postalCode: "string101",
-      city: "string101",
-      country: "string101",
-    },
-  };
+export const postUserProfile = async (userProfileData) => {
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: createHeaders(),
-      body: JSON.stringify(dummyData),
+      body: JSON.stringify(userProfileData),
     });
     if (!response.ok) {
       console.error("Error status:", response.status);

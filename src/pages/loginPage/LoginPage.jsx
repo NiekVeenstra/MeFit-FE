@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import keycloak from "../../keycloak";
 import decode from "jwt-decode";
 import styled from "styled-components";
 import { loginUser } from "../../api/userKeycloak/user";
-import { useUser } from "../../context/UserContext";
+import { useUser, useUserProfile } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { postUserProfile } from "../../api/profile/profile";
+import { getUserProfile, postUserProfile } from "../../api/profile/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -48,8 +48,7 @@ const StyledButton = styled.button`
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { v4: uuidv4 } = require('uuid');
-
+  const [IdNumber, setIdNumber] = useState(0);
   const { user, setUser } = useUser({
     id: 0,
     email: "",
@@ -58,18 +57,27 @@ const LoginPage = () => {
     isContributor: false,
     isAdmin: false,
   });
+  const { userProfile, setUserProfile } = useUserProfile({});
 
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
 
-
     const uuid = decodedToken.sid;
-    const uuidBuffer = uuidv4.parse(uuid);
-    const uuidBigInt = BigInt(`0x${uuidBuffer.toString('hex')}`);
-
-    console.log(uuidBigInt);
-
+    const encoder = new TextEncoder();
+    const data = encoder.encode(uuid);
+    crypto.subtle
+      .digest("SHA-256", data)
+      .then((buffer) => {
+        const hex = [...new Uint8Array(buffer)]
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+        const maxNumId = 1000000000; // Set the maximum value for the numId
+        const numId = parseInt(hex, 16) % maxNumId;
+        console.log(numId);
+        setIdNumber(numId);
+      })
+      .catch(console.error);
 
     setUser({
       id: decodedToken.sid,
@@ -81,12 +89,35 @@ const LoginPage = () => {
     });
   }, [setUser]);
 
-  const handleLogin = () => {
-    loginUser(user);
-    navigate("/dashboard");
+  const handleLogin = async () => {
+    const profileData = await getUserProfile(IdNumber);
+    console.log(userProfile);
+    setUserProfile({
+      ...userProfile,
+      id: IdNumber,
+      // weight: 0,
+      // height: 0,
+      // medicalConditions: "",
+      // disabilities: "",
+      // userId: 0,
+      // address: {
+      //   addressLine1: "string",
+      //   addressLine2: "string",
+      //   addressLine3: "string",
+      //   postalCode: "string",
+      //   city: "string",
+      //   country: "string",
+      // },
+    });
+    console.log(profileData.id);
+    console.log(profileData.id === undefined);
+    if (profileData.id === undefined) {
+      navigate("/profile");
+    } else {
+      loginUser(user);
+      navigate("/dashboard");
+    }
   };
-
-  const test = () => {};
 
   return (
     <>
@@ -104,13 +135,6 @@ const LoginPage = () => {
               }}
             >
               Enter
-            </StyledButton>
-            <StyledButton
-              onClick={() => {
-                postUserProfile();
-              }}
-            >
-              postUserProfile
             </StyledButton>
           </StyledEnterContainer>
         </StyledLoginPage>
