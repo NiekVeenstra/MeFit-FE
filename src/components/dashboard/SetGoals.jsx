@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../button";
 import { useState, useEffect } from "react";
 import { getWorkouts } from "../../api/apiCall/workouts";
-import { updateWorkout } from "./UpdateWorkout";
+import { updateWorkout } from "../../api/apiCall/workouts";
 const SetGoals = () => {
     const days = "from this date to this date";
     const status = "in progress";
@@ -80,9 +80,9 @@ const SetGoals = () => {
         <div>
             {/* {userData.userWorkouts[1].workoutCompletion} */}
             <div>
-                <GoalList />
+                
                 <ShowAllWorkouts />
-                {/* <ShowCompletedWorkouts /> */}
+                {<GoalList />}
 
             </div>
         </div>
