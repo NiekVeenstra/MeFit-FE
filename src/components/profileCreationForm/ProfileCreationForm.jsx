@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { postUserProfile } from "../../api/profile/profile";
-import { useUser, useUserProfile } from "../../context/UserContext";
+import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
 
 const StyledForm = styled.form`
   display: flex;
@@ -19,11 +19,12 @@ const StyledSubmitButton = styled.button`
 `;
 
 const ProfileCreationForm = () => {
-  const { user, setUser } = useUser({});
+  const { user } = useUser({});
   const { userProfile, setUserProfile } = useUserProfile({});
+  const { setUserCheck } = useUserCheck();
 
-  const [name, setName] = useState(user.firstName);
-  const [email, setEmail] = useState(user.email);
+  const [setName] = useState(user.firstName);
+  const [setEmail] = useState(user.email);
   const [height, setHeight] = useState("100");
   const [weight, setWeight] = useState("100");
   const [medicalConditions, setMedicalConditions] = useState("none");
@@ -32,23 +33,6 @@ const ProfileCreationForm = () => {
   const [postalCode, setPostalCode] = useState("none");
   const [city, setCity] = useState("none");
   const [country, setCountry] = useState("none");
-  const [fitnessLevel, setFitnessLevel] = useState("");
-
-  // const dummyData = {
-  //   weight: weight,
-  //   height: height,
-  //   medicalConditions: medicalConditions,
-  //   disabilities: disabilities,
-  //   userId: user.id,
-  //   address: {
-  //     addressLine1: addressLine1,
-  //     addressLine2: "string",
-  //     addressLine3: "string",
-  //     postalCode: postalCode,
-  //     city: city,
-  //     country: country,
-  //   },
-  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -69,11 +53,23 @@ const ProfileCreationForm = () => {
       },
     });
     console.log(userProfile);
-    postUserProfile(userProfile);
-  };
+    postUserProfile({
+      weight: weight,
+      height: height,
+      medicalConditions: medicalConditions,
+      disabilities: disabilities,
+      userId: user.id,
+      address: {
+        addressLine1: addressLine1,
+        addressLine2: "string",
+        addressLine3: "string",
+        postalCode: postalCode,
+        city: city,
+        country: country,
+      },
+    });
 
-  const log = () => {
-    console.log(userProfile.id);
+    setUserCheck(false);
   };
 
   return (
@@ -96,17 +92,25 @@ const ProfileCreationForm = () => {
       </label>
       <label>
         Height:
-        <input type="number" defaultValue={100} onChange={(event) => setHeight(event.target.value)} />
+        <input
+          type="number"
+          defaultValue={height}
+          onChange={(event) => setHeight(event.target.value)}
+        />
       </label>
       <label>
         Weight:
-        <input type="number" defaultValue={100} onChange={(event) => setWeight(event.target.value)} />
+        <input
+          type="number"
+          defaultValue={weight}
+          onChange={(event) => setWeight(event.target.value)}
+        />
       </label>
       <label>
         Medical Conditions:
         <input
           type="text"
-          defaultValue={"none"}
+          defaultValue={medicalConditions}
           onChange={(event) => setMedicalConditions(event.target.value)}
         />
       </label>
@@ -114,7 +118,7 @@ const ProfileCreationForm = () => {
         Disabilities:
         <input
           type="text"
-          defaultValue={"none"}
+          defaultValue={disabilities}
           onChange={(event) => setDisabilities(event.target.value)}
         />
       </label>
@@ -122,37 +126,31 @@ const ProfileCreationForm = () => {
         Address:
         <input
           type="text"
-          defaultValue={"none"}
+          defaultValue={addressLine1}
           onChange={(event) => setAddressLine1(event.target.value)}
         />
       </label>
       <label>
         Postal Code:
-        <input type="text" defaultValue={"none"} onChange={(event) => setPostalCode(event.target.value)} />
+        <input
+          type="text"
+          defaultValue={postalCode}
+          onChange={(event) => setPostalCode(event.target.value)}
+        />
       </label>
       <label>
         City:
-        <input type="text" defaultValue={"none"} onChange={(event) => setCity(event.target.value)} />
+        <input type="text" defaultValue={city} onChange={(event) => setCity(event.target.value)} />
       </label>
       <label>
         Country:
-        <input type="text" defaultValue={"none"} onChange={(event) => setCountry(event.target.value)} />
+        <input
+          type="text"
+          defaultValue={country}
+          onChange={(event) => setCountry(event.target.value)}
+        />
       </label>
-
-      {/* <label>
-        Fitness Level:
-        <select
-          value={fitnessLevel || ""}
-          onChange={(event) => setFitnessLevel(event.target.value)}
-        >
-          <option value="">Select One</option>
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-        </select>
-      </label> */}
       <StyledSubmitButton type="submit">Submit</StyledSubmitButton>
-      <button onClick={log()}>log</button>
     </StyledForm>
   );
 };

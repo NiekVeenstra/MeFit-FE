@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getUserProfile } from "../../api/profile/profile";
+import { getUserProfile, getUserProfiles } from "../../api/profile/profile";
 import ProfileCreationForm from "../../components/profileCreationForm/ProfileCreationForm";
-import { useUser } from "../../context/UserContext";
+import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
 
 const StyledProfilePage = styled.div`
   display: flex;
@@ -20,13 +20,28 @@ const StyledProfileInfoContainer = styled.div`
 `;
 
 const ProfilePage = () => {
-  const { user, setUser } = useUser({});
-  const profileData = getUserProfile();
-  console.log(profileData);
+  const { user } = useUser({});
+  const { userProfile } = useUserProfile({});
+
+  const { userCheck, setUserCheck } = useUserCheck(true);
+
+  const getUserData = async () => {
+    const getUserProfilesData = await getUserProfiles();
+    const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
+    setUserCheck(checkNum.length === 0);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <StyledProfilePage>
       <h3>Profile</h3>
-      {profileData.id === undefined ? (
+      {
+      // userProfile === null || 
+      userCheck 
+      ? (
         <ProfileCreationForm />
       ) : (
         <>
@@ -39,7 +54,7 @@ const ProfilePage = () => {
               Name: {user.firstName} {user.lastName}
             </div>
             <div>E-mail: {user.email}</div>
-            <button>edit profile</button>
+            <button onClick={() => setUserCheck(true)}>edit profile</button>
           </StyledProfileInfoContainer>
         </>
       )}

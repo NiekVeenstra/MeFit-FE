@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { loginUser } from "../../api/userKeycloak/user";
 import { useUser, useUserProfile } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { getUserProfile, postUserProfile } from "../../api/profile/profile";
+import { getUserProfile, getUserProfiles, postUserProfile } from "../../api/profile/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -57,30 +57,29 @@ const LoginPage = () => {
     isContributor: false,
     isAdmin: false,
   });
-  const { userProfile, setUserProfile } = useUserProfile({});
+  // const { userProfile, setUserProfile } = useUserProfile({});
 
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
 
-    const uuid = decodedToken.sid;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(uuid);
-    crypto.subtle
-      .digest("SHA-256", data)
-      .then((buffer) => {
-        const hex = [...new Uint8Array(buffer)]
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("");
-        const maxNumId = 1000000000; // Set the maximum value for the numId
-        const numId = parseInt(hex, 16) % maxNumId;
-        console.log(numId);
-        setIdNumber(numId);
-      })
-      .catch(console.error);
+    // const uuid = decodedToken.sid;
+    // const encoder = new TextEncoder();
+    // const data = encoder.encode(uuid);
+    // crypto.subtle
+    //   .digest("SHA-256", data)
+    //   .then((buffer) => {
+    //     const hex = [...new Uint8Array(buffer)]
+    //       .map((b) => b.toString(16).padStart(2, "0"))
+    //       .join("");
+    //     const maxNumId = 1000000000; // Set the maximum value for the numId
+    //     const numId = parseInt(hex, 16) % maxNumId;
+    //     setIdNumber(numId);
+    //   })
+    //   .catch(console.error);
 
     setUser({
-      id: decodedToken.sid,
+      id: decodedToken.sub,
       email: decodedToken.email,
       firstName: decodedToken.given_name,
       lastName: decodedToken.family_name,
@@ -90,33 +89,47 @@ const LoginPage = () => {
   }, [setUser]);
 
   const handleLogin = async () => {
-    const profileData = await getUserProfile(IdNumber);
-    console.log(userProfile);
-    setUserProfile({
-      ...userProfile,
-      id: IdNumber,
-      // weight: 0,
-      // height: 0,
-      // medicalConditions: "",
-      // disabilities: "",
-      // userId: 0,
-      // address: {
-      //   addressLine1: "string",
-      //   addressLine2: "string",
-      //   addressLine3: "string",
-      //   postalCode: "string",
-      //   city: "string",
-      //   country: "string",
-      // },
-    });
-    console.log(profileData.id);
-    console.log(profileData.id === undefined);
-    if (profileData.id === undefined) {
+    const getUserProfilesData = await getUserProfiles();
+    console.log(user.id);
+    const checkNum = await getUserProfilesData.filter(
+      (profile) => profile.userId === user.id
+    );
+
+
+
+    if (checkNum.length === 0) {
       navigate("/profile");
     } else {
       loginUser(user);
       navigate("/dashboard");
     }
+
+
+
+    // setUserProfile({
+    //   ...userProfile,
+    //   id: IdNumber,
+    //   // weight: 0,
+    //   // height: 0,
+    //   // medicalConditions: "",
+    //   // disabilities: "",
+    //   // userId: 0,
+    //   // address: {
+    //   //   addressLine1: "string",
+    //   //   addressLine2: "string",
+    //   //   addressLine3: "string",
+    //   //   postalCode: "string",
+    //   //   city: "string",
+    //   //   country: "string",
+    //   // },
+    // });
+
+    // if (profileData.id === undefined) {
+    //   navigate("/profile");
+    // } else {
+    //   loginUser(user);
+    //   navigate("/dashboard");
+    // }
   };
 
   return (
