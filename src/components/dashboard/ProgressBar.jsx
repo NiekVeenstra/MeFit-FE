@@ -15,7 +15,7 @@ function ProgressBar() {
     fetchData();
   }, []);
   return (
-    <div>
+    <div style={{ width: "12rem", border: "solid 1px", borderRadius: "15px", padding: "0.6rem" }}>
       <p>Completed: {completedPercentage.toFixed(2)}%</p>
       <div>
         <progress value={completedPercentage} max="100" />

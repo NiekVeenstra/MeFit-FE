@@ -2,7 +2,8 @@ import React from "react";
 import Button from "../button";
 import { useState, useEffect } from "react";
 import { getWorkouts } from "../../api/apiCall/workouts";
-import { updateWorkout } from "../../api/apiCall/workouts";
+
+
 const SetGoals = () => {
     const days = "from this date to this date";
     const status = "in progress";
@@ -45,7 +46,7 @@ const SetGoals = () => {
         // your code for rendering the list of goals goes here
         return (
             <div>
-                <button onClick={() => setShowDetails(!showDetails)}>Show details</button>
+                <button onClick={() => setShowDetails(!showDetails)} style={{ width: "8rem", border: "solid 2px", borderRadius: "15px", padding: "0.6rem", background: "blue", color: "white" }}>Show details</button>
                 {showDetails && (
                     <div>
                         {/* your code for rendering the details of all goals goes here */}

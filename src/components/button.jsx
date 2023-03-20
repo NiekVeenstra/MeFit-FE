@@ -9,7 +9,7 @@ const Button = () => {
         setClick(!click);
     };
     return (
-        <button onClick={handleClick}>
+        <button onClick={handleClick} style={{ width: "6rem", border: "solid 2px", borderRadius: "15px", padding: "0.6rem", background: "blue", color: "white" }}>
             {click ? "clicked" : 'not clicked'}
         </button>
     );
