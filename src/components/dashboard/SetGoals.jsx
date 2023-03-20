@@ -3,17 +3,22 @@ import Button from "../button";
 import { useState, useEffect } from "react";
 import { getWorkouts } from '../../api/apiCall/workouts'
 import { updateWorkout } from '../../api/apiCall/updateWorkout'
+import { useGoals } from "../../context/UserContext";
 
 
 const SetGoals = () => {
+    const { oneGoal, setOneGoal } = useGoals();
     const days = "from this date to this date";
     const status = "in progress";
     // const goals = [];
     const [goals, setGoals] = useState([])
     const fetchData = async () => {
-        const goals = await getWorkouts();
-        setGoals(goals);
+        const workoutGoals = await getWorkouts();
+        setGoals(workoutGoals);
+
     };
+
+
     const ShowAllWorkouts = () => {
         if (goals.length === 0) {
             return (
@@ -45,12 +50,13 @@ const SetGoals = () => {
                         <p>Status: {status}.</p>
                         <p> All workouts for the goal, completed and pending</p>
                         {goals.map((workout, index) => {
-                            var ShowButton = !workout.complete ? <Button item={workout} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
+                            var ShowButton = !workout.complete ? <Button item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
 
                             return (
                                 <div key={index}>
                                     <h3>{workout.name}</h3>
                                     <p>{workout.complete ? "Completed" : "Not Completed"}</p>
+
                                     {/* // create a button for completion of workout market as "Not Completed" */}
                                     {ShowButton}
                                 </div>
@@ -71,6 +77,8 @@ const SetGoals = () => {
             <div>
                 <ShowAllWorkouts />
                 {<GoalList />}
+                <button onClick={() => setGoals({ ...goals, complete: true })} >click</button>
+                <button onClick={() => console.log(oneGoal)} >click</button>
 
             </div>
         </div>

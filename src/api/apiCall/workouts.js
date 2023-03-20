@@ -16,21 +16,19 @@ const apiUrl = process.env.REACT_APP_API_WORKOUTS;
     }
   };
  
-
-//   function Button2({ item, updateWorkout, getWorkouts }) {
-//     const [clicked, setClicked] = useState(false);
-
-//     const handleClick = () => {
-//         updateWorkout(item.id);
-//         getWorkouts();
-//         setClicked(true);
-//     };
-
-//     return (
-//         <button onClick={handleClick}>
-//             {clicked ? 'Clicked' : 'Not Clicked'}
-//         </button>
-//     );
-// }
+  export const getOneWorkout = async (id) => {
+    try {
+      const response = await fetch(`${apiUrl}/${id}`);
+      if (!response.ok) {
+        throw new Error(`could not complete request`);
+      }
+      const data = await response.json();
+      console.log(data);
+      return  data;
+    } catch (error) {
+      return [error.message, []];
+    }
+  };
+ 
 
 
