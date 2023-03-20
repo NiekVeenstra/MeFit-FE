@@ -52,8 +52,7 @@ const ProfileCreationForm = () => {
         country: country,
       },
     });
-    console.log(userProfile);
-    postUserProfile({
+    postUserProfile(user, {
       weight: weight,
       height: height,
       medicalConditions: medicalConditions,
