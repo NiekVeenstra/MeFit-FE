@@ -1,4 +1,3 @@
-import { useState } from 'react';
 const apiUrl = process.env.REACT_APP_API_WORKOUTS;
 
 
@@ -16,43 +15,22 @@ const apiUrl = process.env.REACT_APP_API_WORKOUTS;
       return [error.message, []];
     }
   };
-  const updateWorkout = async (id) => {
-    try {
-        const response = await fetch(`${apiUrl}/${id}}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ "op": "replace", "path": "/complete", "value": "true" })
-        })
-            .then((response) => response.json())
-            .then(function (workouts) { console.log('Workout updated:', workouts) });
+ 
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+//   function Button2({ item, updateWorkout, getWorkouts }) {
+//     const [clicked, setClicked] = useState(false);
 
-        // const data = await response.json();
+//     const handleClick = () => {
+//         updateWorkout(item.id);
+//         getWorkouts();
+//         setClicked(true);
+//     };
 
-    } catch (error) {
-        console.error('Error updating workout:', error);
-    }
-};
-
-  function Button2({ item, updateWorkout, getWorkouts }) {
-    const [clicked, setClicked] = useState(false);
-
-    const handleClick = () => {
-        updateWorkout(item.id);
-        getWorkouts();
-        setClicked(true);
-    };
-
-    return (
-        <button onClick={handleClick}>
-            {clicked ? 'Clicked' : 'Not Clicked'}
-        </button>
-    );
-}
+//     return (
+//         <button onClick={handleClick}>
+//             {clicked ? 'Clicked' : 'Not Clicked'}
+//         </button>
+//     );
+// }
 
 

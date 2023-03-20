@@ -1,12 +1,14 @@
 import React from "react";
 import Button from "../button";
 import { useState, useEffect } from "react";
-import { getWorkouts } from "../../api/apiCall/workouts";
+import { getWorkouts } from '../../api/apiCall/workouts'
+import { updateWorkout } from '../../api/apiCall/updateWorkout'
 
 
 const SetGoals = () => {
     const days = "from this date to this date";
     const status = "in progress";
+    // const goals = [];
     const [goals, setGoals] = useState([])
     const fetchData = async () => {
         const goals = await getWorkouts();
@@ -25,18 +27,7 @@ const SetGoals = () => {
         } else {
             return (
                 <div>
-                    {goals.map((workout, index) => {
-                        var ShowButton = !workout.complete ? <Button item={workout} /> : null;
-
-                        return (
-                            <div key={index}>
-                                <h3>{workout.name}</h3>
-                                <p>{workout.complete ? "Completed" : "Not Completed"}</p>
-                                {/* // create a button for completion of workout market as "Not Completed" */}
-                                {ShowButton}
-                            </div>
-                        );
-                    })}
+                    <h3>You have {goals.length} workouts!</h3>
                 </div>
             );
         }
@@ -52,36 +43,32 @@ const SetGoals = () => {
                         {/* your code for rendering the details of all goals goes here */}
                         <p>PERIOD: {days}.</p>
                         <p>Status: {status}.</p>
-                        <p> All workouts for the goal, completed and pending</p>{" "}
-                        <p>The reference to the users previously achieved goals</p>{" "}
+                        <p> All workouts for the goal, completed and pending</p>
+                        {goals.map((workout, index) => {
+                            var ShowButton = !workout.complete ? <Button item={workout} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
+
+                            return (
+                                <div key={index}>
+                                    <h3>{workout.name}</h3>
+                                    <p>{workout.complete ? "Completed" : "Not Completed"}</p>
+                                    {/* // create a button for completion of workout market as "Not Completed" */}
+                                    {ShowButton}
+                                </div>
+                            );
+                        })}
+                        <p>The reference to the users previously achieved goals</p>
+                        {/* {userData.userWorkouts[1].workoutCompletion} */}
                     </div>
                 )}
             </div>
         );
     }
-    // show completed workout
-    // const completedWorkouts =
-    //     userData.userWorkouts.filter(function (workout) {
-    //         return workout.workoutCompletion == true;
-    //     });
-    // console.log(completedWorkouts.at(0).workoutName);
-    // const ShowCompletedWorkouts = () => {
-    //     return (
-    //         <div>
-    //             <h3>Completed workouts:</h3>
-    //             <h3>{completedWorkouts.at(0).workoutName}</h3>
-    //         </div>
-    //     )
-    // }
-    // show in progress workout
     useEffect(() => {
         fetchData();
     }, []);
     return (
         <div>
-            {/* {userData.userWorkouts[1].workoutCompletion} */}
             <div>
-                
                 <ShowAllWorkouts />
                 {<GoalList />}
 
