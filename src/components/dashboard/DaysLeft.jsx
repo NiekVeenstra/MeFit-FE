@@ -17,12 +17,15 @@ const DaysLeft = () => {
   return (
     <div
       style={{
-        backgroundColor: "#ee0c0c",
+        color: "white",
+        borderRadius: "15px",
+        backgroundColor: "blue",
         display: "inline-block",
         marginTop: "25px",
         padding: "10px",
         textAlign: "center",
-        width: "70px",
+        width: "4rem",
+        alignItems: "left",
       }}
       role="timer"
     >
