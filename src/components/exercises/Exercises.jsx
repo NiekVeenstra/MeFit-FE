@@ -1,8 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { exerciseOptions, fetchData } from "../../utils/fetchData";
 import ExerciseCard from "../exerciseCard/ExerciseCard";
+import styled from "styled-components";
 
-const PAGE_SIZE = 10; // The number of exercises to show per page
+const PAGE_SIZE = 50; // The number of exercises to show per page
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const StyledExerciseCardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+`;
+
+const StyledPaginationButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+`;
+
+const StyledPaginationButton = styled.button`
+  padding: 10px;
+  background-color: #FFF;
+  color: ${(props) => props.theme.colors.textColorDark};
+  font-size: ${(props) => props.theme.fontSize.h4};
+  margin: 5px;
+  border: 1px solid ${(props) => props.theme.colors.mainColor};;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.mainColor};
+    color: #FFF;
+  }
+
+  &:disabled {
+    background-color: #000;
+    color: #FFF;
+    cursor: not-allowed;
+  }
+`;
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,40 +76,37 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
       fetchExercisesData();
     }, [bodyPart])
     
-
     return (
-        <div>
-        Showing results
-        <div>
-            {exercisesToShow.map((exercise, index) => (
-            <ExerciseCard key={index} exercise={exercise} />
+      <StyledContainer>
+      <StyledExerciseCardContainer>
+        {exercisesToShow.map((exercise, index) => (
+          <ExerciseCard key={index} exercise={exercise} />
         ))}
-      </div>
-      <div>
-        {/* Display page numbers and buttons */}
-        <button
+      </StyledExerciseCardContainer>
+      <StyledPaginationButtonsContainer>
+        <StyledPaginationButton
           onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
           disabled={currentPage === 1}
         >
           Previous
-        </button>
+        </StyledPaginationButton>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
+          <StyledPaginationButton
             key={page}
             onClick={() => setCurrentPage(page)}
             disabled={currentPage === page}
           >
             {page}
-          </button>
+          </StyledPaginationButton>
         ))}
-        <button
+        <StyledPaginationButton
           onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
           disabled={currentPage === totalPages}
         >
           Next
-        </button>
-      </div>
-    </div>
+        </StyledPaginationButton>
+      </StyledPaginationButtonsContainer>
+    </StyledContainer>
   );
 };
 
