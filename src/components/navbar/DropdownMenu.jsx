@@ -54,7 +54,6 @@ const StyledNavLink = styled(NavLink)`
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
-  console.log(user.isAdmin);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };

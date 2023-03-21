@@ -41,8 +41,6 @@ export const postUserProfile = async (userProfileData) => {
       throw new Error("Could not create user with username");
     }
     const data = await response.json();
-    console.log(data);
-    console.log(data.id);
     return [null, data];
   } catch (error) {
     return [error.message, []];
@@ -107,12 +105,8 @@ fetch(url, {
 
 
 export const updateUserProfile = async (user, userData) => {
-  console.log(user);
-  console.log(userData)
   const getUserProfilesData = await getUserProfiles();
-  console.log(getUserProfilesData);
   const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
-  console.log(checkNum);
 
   if (checkNum.length === 0){
     postUserProfile(userData)

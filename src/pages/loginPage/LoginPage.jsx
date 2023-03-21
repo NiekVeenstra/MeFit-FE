@@ -74,7 +74,6 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     const getUserProfilesData = await getUserProfiles();
-    console.log(user.id);
     const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
 
     if (checkNum.length === 0) {
