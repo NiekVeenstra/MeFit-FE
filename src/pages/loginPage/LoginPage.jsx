@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import keycloak from "../../keycloak";
 import decode from "jwt-decode";
 import styled from "styled-components";
 import { loginUser } from "../../api/userKeycloak/user";
-import { useUser, useUserProfile } from "../../context/UserContext";
+import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { getUserProfile, getUserProfiles, postUserProfile } from "../../api/profile/profile";
+import { getUserProfiles } from "../../api/profile/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -48,7 +48,6 @@ const StyledButton = styled.button`
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [IdNumber, setIdNumber] = useState(0);
   const { user, setUser } = useUser({
     id: 0,
     email: "",
@@ -57,27 +56,11 @@ const LoginPage = () => {
     isContributor: false,
     isAdmin: false,
   });
-  // const { userProfile, setUserProfile } = useUserProfile({});
 
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
     const adminCheck = decodedToken.realm_access.roles.filter(role => role === "ADMIN");
-
-    // const uuid = decodedToken.sid;
-    // const encoder = new TextEncoder();
-    // const data = encoder.encode(uuid);
-    // crypto.subtle
-    //   .digest("SHA-256", data)
-    //   .then((buffer) => {
-    //     const hex = [...new Uint8Array(buffer)]
-    //       .map((b) => b.toString(16).padStart(2, "0"))
-    //       .join("");
-    //     const maxNumId = 1000000000; // Set the maximum value for the numId
-    //     const numId = parseInt(hex, 16) % maxNumId;
-    //     setIdNumber(numId);
-    //   })
-    //   .catch(console.error);
 
     setUser({
       id: decodedToken.sub,
@@ -100,31 +83,6 @@ const LoginPage = () => {
       loginUser(user);
       navigate("/dashboard");
     }
-
-    // setUserProfile({
-    //   ...userProfile,
-    //   id: IdNumber,
-    //   // weight: 0,
-    //   // height: 0,
-    //   // medicalConditions: "",
-    //   // disabilities: "",
-    //   // userId: 0,
-    //   // address: {
-    //   //   addressLine1: "string",
-    //   //   addressLine2: "string",
-    //   //   addressLine3: "string",
-    //   //   postalCode: "string",
-    //   //   city: "string",
-    //   //   country: "string",
-    //   // },
-    // });
-
-    // if (profileData.id === undefined) {
-    //   navigate("/profile");
-    // } else {
-    //   loginUser(user);
-    //   navigate("/dashboard");
-    // }
   };
 
   return (

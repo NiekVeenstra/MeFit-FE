@@ -12,7 +12,6 @@ const DropdownWrapper = styled.div`
 const DropdownToggle = styled.button`
   color: ${(props) => props.theme.colors.white};
   padding: 0.6rem;
-  //border: 0.1rem solid ${(props) => props.theme.colors.black};
   border-radius: 15px;
   width: 8rem;
   background-color: ${(props) => props.theme.colors.mainColor};

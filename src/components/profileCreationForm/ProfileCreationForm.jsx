@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { postUserProfile, updateUserProfile } from "../../api/profile/profile";
+import { updateUserProfile } from "../../api/profile/profile";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
 
 const StyledForm = styled.form`
