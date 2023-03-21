@@ -136,7 +136,8 @@ export const updateUserProfile = async (user, userData) => {
     postUserProfile(userData)
   } else {
     console.log("PATCH")
-    patchProfile()
+    // patchProfile()
+    postUserProfile(userData)
   }
 
   // const user = await getUserProfile(keycloakData.id);
