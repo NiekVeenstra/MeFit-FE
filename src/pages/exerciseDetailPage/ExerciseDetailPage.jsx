@@ -1,10 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from "styled-components";
 
 import { exerciseOptions, fetchData, youtubeOptions } from "../../utils/fetchData";
 import Detail from '../../components/detail/Detail';
 import ExerciseVideos from '../../components/exerciseVideos/ExerciseVideos';
-import SimilarExercises from '../../components/similarExercises/SimilarExercises';
+
+const StyledExercisesDetailPage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+`;
+
+const StyledCenterContainer = styled.div`
+  border: solid 0.15rem ${(props) => props.theme.colors.mainColor};
+  border-radius: 15px;
+  width: 80%;
+  max-width: 80%;
+  margin-top: 50px;
+  padding: 1rem;
+  text-align: center;
+  @media (max-width: 450px) {
+    width: 100%;
+    border: none;
+  }
+`;
 
 const ExerciseDetailPage = () => {
   const [exerciseDetail, setExerciseDetail] = useState({});
@@ -30,10 +53,12 @@ const ExerciseDetailPage = () => {
   
 
   return (
-    <div>
-      <Detail exerciseDetail={exerciseDetail} />
-      <ExerciseVideos exerciseVideos={exerciseVideos} name={exerciseDetail.name} />
-    </div>
+    <StyledExercisesDetailPage>
+      <StyledCenterContainer>
+        <Detail exerciseDetail={exerciseDetail} />
+        <ExerciseVideos exerciseVideos={exerciseVideos} name={exerciseDetail.name} />
+      </StyledCenterContainer>
+    </StyledExercisesDetailPage>
   )
 }
 
