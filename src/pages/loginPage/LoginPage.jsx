@@ -62,6 +62,7 @@ const LoginPage = () => {
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
+    const adminCheck = decodedToken.realm_access.roles.filter(role => role === "ADMIN");
 
     // const uuid = decodedToken.sid;
     // const encoder = new TextEncoder();
@@ -84,18 +85,14 @@ const LoginPage = () => {
       firstName: decodedToken.given_name,
       lastName: decodedToken.family_name,
       isContributor: false,
-      isAdmin: false,
+      isAdmin: adminCheck.length !== 0,
     });
   }, [setUser]);
 
   const handleLogin = async () => {
     const getUserProfilesData = await getUserProfiles();
     console.log(user.id);
-    const checkNum = await getUserProfilesData.filter(
-      (profile) => profile.userId === user.id
-    );
-
-
+    const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
 
     if (checkNum.length === 0) {
       navigate("/profile");
@@ -103,8 +100,6 @@ const LoginPage = () => {
       loginUser(user);
       navigate("/dashboard");
     }
-
-
 
     // setUserProfile({
     //   ...userProfile,

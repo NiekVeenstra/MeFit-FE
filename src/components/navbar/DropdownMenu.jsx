@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useUser } from "../../context/UserContext";
 import keycloak from "../../keycloak";
 
 const DropdownWrapper = styled.div`
@@ -38,14 +39,23 @@ const DropdownMenuItem = styled.li`
   transition: 0.3s;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.backgroundColorActive};
+    background-color: ${(props) => props.theme.colors.mainColor};
+    color: ${(props) => props.theme.colors.white}!important;
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  padding: 0.4rem 0.7rem;
+
+  &:hover {
     color: ${(props) => props.theme.colors.white};
   }
 `;
 
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { user } = useUser();
+  console.log(user.isAdmin);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -66,36 +76,35 @@ const DropdownMenu = () => {
       {isOpen && (
         <DropdownMenuContainer>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/">
+            <StyledNavLink onClick={handleCloseMenu} to="/">
               Start
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/dashboard">
+            <StyledNavLink onClick={handleCloseMenu} to="/dashboard">
               Dashboard
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/exercises">
+            <StyledNavLink onClick={handleCloseMenu} to="/exercises">
               Exercises
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/user">
-              User
-            </NavLink>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/profile">
+            <StyledNavLink onClick={handleCloseMenu} to="/profile">
               Profile
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/admin">
-              Admin
-            </NavLink>
+          {user.isAdmin && (
+            <DropdownMenuItem>
+              <StyledNavLink onClick={handleCloseMenu} to="/admin">
+                Admin
+              </StyledNavLink>
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem onClick={handleLogoutClick}>
+            <StyledNavLink>Logout</StyledNavLink>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogoutClick}>Logout</DropdownMenuItem>
         </DropdownMenuContainer>
       )}
     </DropdownWrapper>

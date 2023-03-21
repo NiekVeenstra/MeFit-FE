@@ -6,16 +6,44 @@ import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  max-width: 45rem;
+
+  border: solid 0.15rem ${(props) => props.theme.colors.mainColor};
+  border-radius: 15px;
+
+  @media (max-width: 450px) {
+    width: 100%;
+    border: none;
+  }
+`;
+
+const StyledLabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+`;
+
+const StyledLabel = styled.label`
+  margin: 0.7rem 0;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StyledSubmitButton = styled.button`
   color: ${(props) => props.theme.colors.white};
   padding: 0.6rem;
-  //border: 0.1rem solid ${(props) => props.theme.colors.black};
+  margin: 1rem 0;
   border-radius: 15px;
-  cursor: pointer;
   width: 8rem;
   background-color: ${(props) => props.theme.colors.mainColor};
+  align-self: center;
 `;
 
 const ProfileCreationForm = () => {
@@ -74,82 +102,88 @@ const ProfileCreationForm = () => {
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <label>
-        Name:
-        <input
-          type="text"
-          defaultValue={`${user.firstName}`}
-          onChange={(event) => setName(event.target.value)}
-        />
-      </label>
-      <label>
-        Email:
-        <input
-          type="email"
-          defaultValue={`${user.email}`}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </label>
-      <label>
-        Height:
-        <input
-          type="number"
-          defaultValue={height}
-          onChange={(event) => setHeight(event.target.value)}
-        />
-      </label>
-      <label>
-        Weight:
-        <input
-          type="number"
-          defaultValue={weight}
-          onChange={(event) => setWeight(event.target.value)}
-        />
-      </label>
-      <label>
-        Medical Conditions:
-        <input
-          type="text"
-          defaultValue={medicalConditions}
-          onChange={(event) => setMedicalConditions(event.target.value)}
-        />
-      </label>
-      <label>
-        Disabilities:
-        <input
-          type="text"
-          defaultValue={disabilities}
-          onChange={(event) => setDisabilities(event.target.value)}
-        />
-      </label>
-      <label>
-        Address:
-        <input
-          type="text"
-          defaultValue={addressLine1}
-          onChange={(event) => setAddressLine1(event.target.value)}
-        />
-      </label>
-      <label>
-        Postal Code:
-        <input
-          type="text"
-          defaultValue={postalCode}
-          onChange={(event) => setPostalCode(event.target.value)}
-        />
-      </label>
-      <label>
-        City:
-        <input type="text" defaultValue={city} onChange={(event) => setCity(event.target.value)} />
-      </label>
-      <label>
-        Country:
-        <input
-          type="text"
-          defaultValue={country}
-          onChange={(event) => setCountry(event.target.value)}
-        />
-      </label>
+      <StyledLabelContainer>
+        <StyledLabel>
+          Name:
+          <input
+            type="text"
+            defaultValue={`${user.firstName}`}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Email:
+          <input
+            type="email"
+            defaultValue={`${user.email}`}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Height:
+          <input
+            type="number"
+            defaultValue={height}
+            onChange={(event) => setHeight(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Weight:
+          <input
+            type="number"
+            defaultValue={weight}
+            onChange={(event) => setWeight(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Medical Conditions:
+          <input
+            type="text"
+            defaultValue={medicalConditions}
+            onChange={(event) => setMedicalConditions(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Disabilities:
+          <input
+            type="text"
+            defaultValue={disabilities}
+            onChange={(event) => setDisabilities(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Address:
+          <input
+            type="text"
+            defaultValue={addressLine1}
+            onChange={(event) => setAddressLine1(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Postal Code:
+          <input
+            type="text"
+            defaultValue={postalCode}
+            onChange={(event) => setPostalCode(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          City:
+          <input
+            type="text"
+            defaultValue={city}
+            onChange={(event) => setCity(event.target.value)}
+          />
+        </StyledLabel>
+        <StyledLabel>
+          Country:
+          <input
+            type="text"
+            defaultValue={country}
+            onChange={(event) => setCountry(event.target.value)}
+          />
+        </StyledLabel>
+      </StyledLabelContainer>
       <StyledSubmitButton type="submit">Submit</StyledSubmitButton>
     </StyledForm>
   );

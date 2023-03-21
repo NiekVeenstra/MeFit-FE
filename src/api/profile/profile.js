@@ -121,9 +121,4 @@ export const updateUserProfile = async (user, userData) => {
     patchProfile(checkNum, userData)
     // postUserProfile(userData)
   }
-
-  // const user = await getUserProfile(keycloakData.id);
-  // if (user.id == null) {
-  //   return await postUserProfile(keycloakData);
-  // }
 };

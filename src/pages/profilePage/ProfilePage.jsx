@@ -75,6 +75,8 @@ const ProfilePage = () => {
   const { userCheck, setUserCheck } = useUserCheck(true);
   const [isHovered, setIsHovered] = useState(false);
 
+  const [updateImage, setUpdateImage] = useState(true);
+
   const getUserData = async () => {
     const getUserProfilesData = await getUserProfiles();
     const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
@@ -97,37 +99,39 @@ const ProfilePage = () => {
   return (
     <StyledProfilePage>
       <h3>Profile</h3>
-      {
-        // userProfile === null ||
-        userCheck ? (
-          <ProfileCreationForm />
-        ) : (
-          <StyledUserProfileContainer>
-            <StyledImageContainer
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-            >
-              <StyledImage
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                alt="User profile picture"
-              />
-              {isHovered && <StyledEditButton>Edit Profile Picture</StyledEditButton>}
-            </StyledImageContainer>
-            <StyledProfileInfoContainer>
-              <div>
-                Name: {user.firstName} {user.lastName}
-              </div>
-              <div>E-mail: {user.email}</div>
-              <div>Height: {userProfile[0].height}cm</div>
-              <div>Weight: {userProfile[0].weight}kg</div>
-              <div>Disabilities: {userProfile[0].disabilities}</div>
-              <div>Medical Conditions: {userProfile[0].medicalConditions}</div>
-              {/* <div>Address: {userProfile[0].address ? userProfile[0].address : "none"}</div> */}
-              <StyledButton onClick={() => setUserCheck(true)}>Edit Profile</StyledButton>
-            </StyledProfileInfoContainer>
-          </StyledUserProfileContainer>
-        )
-      }
+      {userCheck ? (
+        <ProfileCreationForm />
+      ) : (
+        <StyledUserProfileContainer>
+          <StyledImageContainer onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <StyledImage
+              src={
+                updateImage
+                  ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                  : "https://i.guim.co.uk/img/media/771b1fbf98f680a716afe138a95fc2a80de9c149/0_645_3504_2101/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=66af6e40fc5b5c96028d6c0ba87c2d12"
+              }
+              alt="User profile picture"
+            />
+            {isHovered && (
+              <StyledEditButton onClick={() => setUpdateImage(!updateImage)}>
+                Edit Profile Picture
+              </StyledEditButton>
+            )}
+          </StyledImageContainer>
+          <StyledProfileInfoContainer>
+            <div>
+              Name: {user.firstName} {user.lastName}
+            </div>
+            <div>E-mail: {user.email}</div>
+            <div>Height: {userProfile[0].height}cm</div>
+            <div>Weight: {userProfile[0].weight}kg</div>
+            <div>Disabilities: {userProfile[0].disabilities}</div>
+            <div>Medical Conditions: {userProfile[0].medicalConditions}</div>
+            {/* <div>Address: {userProfile[0].address ? userProfile[0].address : "none"}</div> */}
+            <StyledButton onClick={() => setUserCheck(true)}>Edit Profile</StyledButton>
+          </StyledProfileInfoContainer>
+        </StyledUserProfileContainer>
+      )}
     </StyledProfilePage>
   );
 };
