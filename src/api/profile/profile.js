@@ -49,27 +49,39 @@ export const postUserProfile = async (userProfileData) => {
   }
 };
 
-export const patchProfile = async () => {
-// const url = 'https://mefitapi-production.up.railway.app/api/Profiles/95';
-const proxyUrl = 'https://api.allorigins.win/raw?url=';
-const targetUrl = 'https://mefitapi-production.up.railway.app/api/Profiles/95';
-const url = proxyUrl + encodeURIComponent(targetUrl);
+export const patchProfile = async (checkNum, userData) => {
+const url = `https://mefitapi-production.up.railway.app/api/Profiles/${checkNum.id}`;
 const headers = {
   'Content-Type': 'application/json-patch+json',
-  // 'Authorization': 'Bearer <your_access_token>',
 };
 const patch = [
   {
-    op: 'replace',
     path: '/weight',
-    value: '9000',
+    op: 'replace',
+    value: userData.weight,
   },
   {
-    op: 'replace',
     path: '/height',
-    value: '9000',
+    op: 'replace',
+    value: userData.height,
   },
-  // Add more operations if necessary
+  {
+    path: '/medicalConditions',
+    op: 'replace',
+    value: userData.medicalConditions,
+  },
+  {
+    path: '/address',
+    op: 'replace',
+    value: {
+      addressLine1: userData.address.addressLine1,
+      addressLine2: userData.address.addressLine2,
+      addressLine3: userData.address.addressLine3,
+      city: userData.address.city,
+      country: userData.address.country,
+      postalCode: userData.address.postalCode,
+    },
+  },
 ];
 
 fetch(url, {
@@ -91,37 +103,6 @@ fetch(url, {
     console.error('Error:', error);
   });
 
-
-
-
-  // const patchData = {
-  //   op: "replace",
-  //   path: "/weight",
-  //   value: "9000",
-  // };
-  // const headers = {
-  //   'Content-Type': 'application/json-patch+json',
-  // };
-  // try {
-  //   const response = await fetch(`${apiUrl}/${id}`, {
-  //     method: 'PATCH',
-  //     headers: headers,
-  //     body: JSON.stringify(patchData),
-  //   });
-  //   if (!response.ok) {
-  //     console.error('Error status:', response.status);
-  //     const errorText = await response.text();
-  //     console.error('Error message:', errorText);
-  //     throw new Error(`Could not update profile with ID ${id}`);
-  //   }
-  //   const data = await response.json();
-  //   console.log(data);
-  //   return [null, data];
-  // } catch (error) {
-  //   return [error.message, []];
-  // }
-
-
 };
 
 
@@ -129,15 +110,16 @@ export const updateUserProfile = async (user, userData) => {
   console.log(user);
   console.log(userData)
   const getUserProfilesData = await getUserProfiles();
+  console.log(getUserProfilesData);
   const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
-  // console.log(checkNum.length === 0);
+  console.log(checkNum);
 
   if (checkNum.length === 0){
     postUserProfile(userData)
   } else {
     console.log("PATCH")
-    // patchProfile()
-    postUserProfile(userData)
+    patchProfile(checkNum, userData)
+    // postUserProfile(userData)
   }
 
   // const user = await getUserProfile(keycloakData.id);

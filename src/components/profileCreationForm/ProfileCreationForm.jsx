@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { postUserProfile } from "../../api/profile/profile";
+import { postUserProfile, updateUserProfile } from "../../api/profile/profile";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
 
 const StyledForm = styled.form`
@@ -52,7 +52,8 @@ const ProfileCreationForm = () => {
         country: country,
       },
     });
-    postUserProfile(user, {
+
+    updateUserProfile(user, {
       weight: weight,
       height: height,
       medicalConditions: medicalConditions,
