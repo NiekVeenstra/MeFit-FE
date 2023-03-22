@@ -24,17 +24,20 @@ const StyledEnterContainer = styled.div`
   margin: 5rem;
   padding: 1rem;
   text-align: center;
-  @media (max-width: 450px) {
+  @media (max-width: 500px) {
     width: 100%;
     border: none;
   }
 `;
 
 const StyledTitle = styled.h3`
+  font-size: 3rem;
   margin-bottom: 1rem;
 `;
 
 const StyledParagraph = styled.p`
+  font-size: 1.5rem;
+  line-height: 1.5;
   margin-bottom: 1rem;
 `;
 
@@ -44,6 +47,7 @@ const StyledButton = styled.button`
   border-radius: 15px;
   width: 8rem;
   background-color: ${(props) => props.theme.colors.mainColor};
+  font-size: 1.5rem;
 `;
 
 const LoginPage = () => {
@@ -60,7 +64,7 @@ const LoginPage = () => {
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
-    const adminCheck = decodedToken.realm_access.roles.filter(role => role === "ADMIN");
+    const adminCheck = decodedToken.realm_access.roles.filter((role) => role === "ADMIN");
 
     setUser({
       id: decodedToken.sub,
@@ -89,10 +93,14 @@ const LoginPage = () => {
       {keycloak.authenticated && (
         <StyledLoginPage>
           <StyledEnterContainer>
+            <StyledTitle>MeFit</StyledTitle>
             <StyledTitle>Welcome</StyledTitle>
             <StyledParagraph>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsa voluptates ut
-              facilis odit ab fugit distinctio sunt aliquid eius?
+              Get ready to achieve your fitness goals with our cutting-edge app! Whether you're
+              looking to build muscle, burn fat, or simply stay active, MeFit has everything you
+              need to make it happen. Our easy-to-use interface, personalized workout plans, and
+              expert guidance will help you unlock your full potential and transform your body and
+              mind.
             </StyledParagraph>
             <StyledButton
               onClick={() => {

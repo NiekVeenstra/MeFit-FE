@@ -46,7 +46,7 @@ const StyledSubmitButton = styled.button`
   align-self: center;
 `;
 
-const ProfileCreationForm = ({onProfileUpdate}) => {
+const ProfileCreationForm = () => {
   const { user } = useUser({});
   const { userProfile, setUserProfile } = useUserProfile({});
   const { setUserCheck } = useUserCheck();
@@ -64,7 +64,7 @@ const ProfileCreationForm = ({onProfileUpdate}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setUserProfile({
+    await setUserProfile({
       ...userProfile,
       weight: weight,
       height: height,
@@ -81,7 +81,7 @@ const ProfileCreationForm = ({onProfileUpdate}) => {
       },
     });
 
-    updateUserProfile(user, {
+    await updateUserProfile(user, {
       weight: weight,
       height: height,
       medicalConditions: medicalConditions,
@@ -96,8 +96,7 @@ const ProfileCreationForm = ({onProfileUpdate}) => {
         country: country,
       },
     });
-    setUserCheck(false);
-    onProfileUpdate();
+    await setUserCheck(false);
   };
 
   return (

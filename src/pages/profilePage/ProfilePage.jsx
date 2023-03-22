@@ -105,15 +105,15 @@ const ProfilePage = () => {
     getUserData();
   }, []);
 
-  const handleProfileUpdate = () => {
-    getUserData();
-  };
+  // const handleProfileUpdate = () => {
+  //   getUserData();
+  // };
 
   return (
     <StyledProfilePage>
       <h3>Profile</h3>
       {userCheck ? (
-        <ProfileCreationForm onProfileUpdate={handleProfileUpdate} />
+        <ProfileCreationForm />
       ) : (
         <StyledUserProfileContainer>
           <StyledImageContainer onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -139,13 +139,13 @@ const ProfilePage = () => {
               />
             </StyledReloadButton>
             <div>
-              Name: {user.firstName} {user.lastName}
+              Name: {user?.firstName} {user?.lastName}
             </div>
-            <div>E-mail: {user.email}</div>
-            <div>Height: {userProfile[0].height}cm</div>
-            <div>Weight: {userProfile[0].weight}kg</div>
-            <div>Disabilities: {userProfile[0].disabilities}</div>
-            <div>Medical Conditions: {userProfile[0].medicalConditions}</div>
+            <div>E-mail: {user?.email}</div>
+            <div>Height: {userProfile[0]?.height}cm</div>
+            <div>Weight: {userProfile[0]?.weight}kg</div>
+            <div>Disabilities: {userProfile[0]?.disabilities}</div>
+            <div>Medical Conditions: {userProfile[0]?.medicalConditions}</div>
             <StyledButton onClick={() => setUserCheck(true)}>Edit Profile</StyledButton>
           </StyledProfileInfoContainer>
         </StyledUserProfileContainer>
