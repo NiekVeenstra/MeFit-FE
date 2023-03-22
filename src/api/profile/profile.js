@@ -48,70 +48,72 @@ export const postUserProfile = async (userProfileData) => {
 };
 
 export const patchProfile = async (checkNum, userData) => {
-const url = `https://mefitapi-production.up.railway.app/api/Profiles/${checkNum.id}?navigationProperty=Address`;
-const headers = {
-  'Content-Type': 'application/json-patch+json',
-};
-const patch = [
-  {
-    path: '/weight',
-    op: 'replace',
-    value: userData.weight,
-  },
-  {
-    path: '/height',
-    op: 'replace',
-    value: userData.height,
-  },
-  {
-    path: '/medicalConditions',
-    op: 'replace',
-    value: userData.medicalConditions,
-  },
-  {
-    path: '/address',
-    op: 'replace',
-    value: {
-      addressLine1: userData.address.addressLine1,
-      addressLine2: userData.address.addressLine2,
-      addressLine3: userData.address.addressLine3,
-      city: userData.address.city,
-      country: userData.address.country,
-      postalCode: userData.address.postalCode,
+  const url = `https://mefitapi-production.up.railway.app/api/Profiles/${checkNum[0].id}?navigationProperty=Address`;
+  const headers = {
+    "Content-Type": "application/json-patch+json",
+  };
+  const patch = [
+    {
+      path: "/weight",
+      op: "replace",
+      value: userData.weight,
     },
-  },
-];
+    {
+      path: "/height",
+      op: "replace",
+      value: userData.height,
+    },
+    {
+      path: "/medicalConditions",
+      op: "replace",
+      value: userData.medicalConditions,
+    },
+    {
+      path: "/disabilities",
+      op: "replace",
+      value: userData.disabilities,
+    },
+    {
+      path: "/address",
+      op: "replace",
+      value: {
+        addressLine1: userData.address.addressLine1,
+        addressLine2: userData.address.addressLine2,
+        addressLine3: userData.address.addressLine3,
+        city: userData.address.city,
+        country: userData.address.country,
+        postalCode: userData.address.postalCode,
+      },
+    },
+  ];
 
-fetch(url, {
-  method: 'PATCH',
-  headers: headers,
-  body: JSON.stringify(patch),
-})
-  .then(response => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
+  fetch(url, {
+    method: "PATCH",
+    headers: headers,
+    body: JSON.stringify(patch),
   })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 };
-
 
 export const updateUserProfile = async (user, userData) => {
   const getUserProfilesData = await getUserProfiles();
   const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
-
-  if (checkNum.length === 0){
-    postUserProfile(userData)
+  if (checkNum.length === 0) {
+    postUserProfile(userData);
   } else {
-    console.log("PATCH")
-    patchProfile(checkNum, userData)
+    console.log("PATCH");
+    patchProfile(checkNum, userData);
   }
 };

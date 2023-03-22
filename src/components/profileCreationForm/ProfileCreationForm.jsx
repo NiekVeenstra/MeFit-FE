@@ -46,7 +46,7 @@ const StyledSubmitButton = styled.button`
   align-self: center;
 `;
 
-const ProfileCreationForm = () => {
+const ProfileCreationForm = ({onProfileUpdate}) => {
   const { user } = useUser({});
   const { userProfile, setUserProfile } = useUserProfile({});
   const { setUserCheck } = useUserCheck();
@@ -62,7 +62,7 @@ const ProfileCreationForm = () => {
   const [city, setCity] = useState("none");
   const [country, setCountry] = useState("none");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setUserProfile({
       ...userProfile,
@@ -96,8 +96,8 @@ const ProfileCreationForm = () => {
         country: country,
       },
     });
-
     setUserCheck(false);
+    onProfileUpdate();
   };
 
   return (

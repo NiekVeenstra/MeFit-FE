@@ -69,6 +69,15 @@ const StyledButton = styled.button`
   align-self: center;
 `;
 
+const StyledReloadButton = styled.button`
+  position: absolute;
+  align-self: end;
+
+  img{
+    width: 1.3rem;
+  }
+`;
+
 const ProfilePage = () => {
   const { user } = useUser({});
   const { userProfile, setUserProfile } = useUserProfile({});
@@ -96,11 +105,15 @@ const ProfilePage = () => {
     getUserData();
   }, []);
 
+  const handleProfileUpdate = () => {
+    getUserData();
+  };
+
   return (
     <StyledProfilePage>
       <h3>Profile</h3>
       {userCheck ? (
-        <ProfileCreationForm />
+        <ProfileCreationForm onProfileUpdate={handleProfileUpdate} />
       ) : (
         <StyledUserProfileContainer>
           <StyledImageContainer onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -119,6 +132,12 @@ const ProfilePage = () => {
             )}
           </StyledImageContainer>
           <StyledProfileInfoContainer>
+            <StyledReloadButton onClick={() => getUserData()}>
+              <img
+                src="https://cdn.icon-icons.com/icons2/1812/PNG/512/4213447-arrow-load-loading-refresh-reload-restart-sync_115423.png"
+                alt=""
+              />
+            </StyledReloadButton>
             <div>
               Name: {user.firstName} {user.lastName}
             </div>
@@ -127,7 +146,6 @@ const ProfilePage = () => {
             <div>Weight: {userProfile[0].weight}kg</div>
             <div>Disabilities: {userProfile[0].disabilities}</div>
             <div>Medical Conditions: {userProfile[0].medicalConditions}</div>
-            {/* <div>Address: {userProfile[0].address ? userProfile[0].address : "none"}</div> */}
             <StyledButton onClick={() => setUserCheck(true)}>Edit Profile</StyledButton>
           </StyledProfileInfoContainer>
         </StyledUserProfileContainer>

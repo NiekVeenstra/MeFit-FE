@@ -93,6 +93,13 @@ const DropdownMenu = () => {
               Profile
             </StyledNavLink>
           </DropdownMenuItem>
+          {user.isAdmin || user.isContributor && (
+            <DropdownMenuItem>
+              <StyledNavLink onClick={handleCloseMenu} to="/contributor">
+                Contributor
+              </StyledNavLink>
+            </DropdownMenuItem>
+          )}
           {user.isAdmin && (
             <DropdownMenuItem>
               <StyledNavLink onClick={handleCloseMenu} to="/admin">
