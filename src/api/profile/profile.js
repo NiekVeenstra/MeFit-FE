@@ -48,7 +48,7 @@ export const postUserProfile = async (userProfileData) => {
 };
 
 export const patchProfile = async (checkNum, userData) => {
-const url = `https://mefitapi-production.up.railway.app/api/Profiles/${checkNum.id}`;
+const url = `https://mefitapi-production.up.railway.app/api/Profiles/${checkNum.id}?navigationProperty=Address`;
 const headers = {
   'Content-Type': 'application/json-patch+json',
 };
@@ -113,6 +113,5 @@ export const updateUserProfile = async (user, userData) => {
   } else {
     console.log("PATCH")
     patchProfile(checkNum, userData)
-    // postUserProfile(userData)
   }
 };
