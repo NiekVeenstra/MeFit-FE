@@ -65,13 +65,14 @@ const LoginPage = () => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
     const adminCheck = decodedToken.realm_access.roles.filter((role) => role === "ADMIN");
+    const contributorCheck = decodedToken.realm_access.roles.filter((role) => role === "CONTRIBUTOR");
 
     setUser({
       id: decodedToken.sub,
       email: decodedToken.email,
       firstName: decodedToken.given_name,
       lastName: decodedToken.family_name,
-      isContributor: false,
+      isContributor: contributorCheck.length !== 0,
       isAdmin: adminCheck.length !== 0,
     });
   }, [setUser]);
