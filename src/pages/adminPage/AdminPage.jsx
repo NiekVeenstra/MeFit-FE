@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
 import styled from "styled-components";
 
+const kCUsername = process.env.REACT_APP_KC_ADMIN_USERNAME
+const kCPassword= process.env.REACT_APP_KC_ADMIN_PASSWORD
+const kCGrantType = process.env.REACT_APP_KC_ADMIN_GRANTTYPE
+const kCClientId = process.env.REACT_APP_KC_ADMIN_CLIENTID
+
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin: 20px;
   font-size: 16px;
+  width: 100%;
 `;
 
 const StyledTh = styled.th`
@@ -22,6 +28,55 @@ const StyledTd = styled.td`
 
 const PaginationButton = styled.button`
   margin: 5px;
+  background-color: ${(props) => props.theme.colors.mainColor};
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  &:hover {
+    background-color: #3e8e41;
+  }
+`;
+
+const DeleteButton = styled.button`
+  background-color: ${(props) => props.theme.colors.mainColor};
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  &:hover {
+    background-color: red;
+  }
+`;
+
+const Select = styled.select`
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  &:focus {
+    outline: none;
+    border-color: ${(props) => props.theme.colors.mainColor};
+    box-shadow: 0 0 5px ${(props) => props.theme.colors.mainColor};
+  }
+`;
+
+const AdminPanel = styled.div`
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  @media (min-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const StyledTitle = styled.h1`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const AdminPage = () => {
@@ -37,10 +92,10 @@ const AdminPage = () => {
 
     let execute = async () => {
       await adminClient.auth({
-        username: "admin",
-        password: "rTwELrALLIEjDdoU7yVD",
-        grantType: "password",
-        clientId: "me-fit-app",
+        username: `${kCUsername}`,
+        password: `${kCPassword}`,
+        grantType: `${kCGrantType}`,
+        clientId: `${kCClientId}`,
       });
 
       const users = await adminClient.users.find();
@@ -68,10 +123,10 @@ const AdminPage = () => {
     });
 
     await adminClient.auth({
-      username: "admin",
-      password: "rTwELrALLIEjDdoU7yVD",
-      grantType: "password",
-      clientId: "me-fit-app",
+      username: `${kCUsername}`,
+      password: `${kCPassword}`,
+      grantType: `${kCGrantType}`,
+      clientId: `${kCClientId}`,
     });
 
     await adminClient.users.del({ id: userId });
@@ -87,10 +142,10 @@ const AdminPage = () => {
     });
 
     await adminClient.auth({
-      username: "admin",
-      password: "rTwELrALLIEjDdoU7yVD",
-      grantType: "password",
-      clientId: "me-fit-app",
+      username: `${kCUsername}`,
+      password: `${kCPassword}`,
+      grantType: `${kCGrantType}`,
+      clientId: `${kCClientId}`,
     });
 
     const currentRoleMappings = await adminClient.users.listRoleMappings({ id: userId });
@@ -155,8 +210,8 @@ const AdminPage = () => {
   });
 
   return (
-    <div>
-      Admin Panel
+    <AdminPanel>
+      <StyledTitle>Admin Panel</StyledTitle>
       <StyledTable>
         <thead>
           <tr>
@@ -164,6 +219,7 @@ const AdminPage = () => {
             <StyledTh>First Name</StyledTh>
             <StyledTh>Last Name</StyledTh>
             <StyledTh>Roles</StyledTh>
+            <StyledTh>Delete</StyledTh>
           </tr>
         </thead>
         <tbody>
@@ -173,7 +229,7 @@ const AdminPage = () => {
               <StyledTd>{user.firstName}</StyledTd>
               <StyledTd>{user.lastName}</StyledTd>
               <StyledTd>
-                <select
+                <Select
                   value={JSON.stringify(
                     user.roles.filter(
                       (role) => role !== "USER" && role !== "default-roles-me-fit-app"
@@ -186,17 +242,17 @@ const AdminPage = () => {
                   <option value="[]">User</option>
                   <option value='["CONTRIBUTOR"]'>Contributor</option>
                   <option value='["ADMIN"]'>Admin</option>
-                </select>
+                </Select>
               </StyledTd>
               <StyledTd>
-                <button onClick={() => keycloakAdminDeleteUser(user.id)}>Delete</button>
+                <DeleteButton onClick={() => keycloakAdminDeleteUser(user.id)}>Delete</DeleteButton>
               </StyledTd>
             </tr>
           ))}
         </tbody>
       </StyledTable>
       <div>{renderPageNumbers}</div>
-    </div>
+    </AdminPanel>
   );
 };
 
