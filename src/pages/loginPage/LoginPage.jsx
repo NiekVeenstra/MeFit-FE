@@ -53,12 +53,12 @@ const StyledButton = styled.button`
 const LoginPage = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUser({
-    id: 0,
-    email: "",
-    firstName: "",
-    lastName: "",
-    isContributor: false,
-    isAdmin: false,
+    // id: 0,
+    // email: "",
+    // firstName: "",
+    // lastName: "",
+    // isContributor: false,
+    // isAdmin: false,
   });
 
   useEffect(() => {

@@ -108,14 +108,13 @@ const DropdownMenu = () => {
               Profile
             </StyledNavLink>
           </DropdownMenuItem>
-          {user.isContributor ||
-            (user.isAdmin && (
-              <DropdownMenuItem>
-                <StyledNavLink onClick={handleCloseMenu} to="/contributor">
-                  Contributor
-                </StyledNavLink>
-              </DropdownMenuItem>
-            ))}
+          {(user.isContributor || user.isAdmin) && (
+            <DropdownMenuItem>
+              <StyledNavLink onClick={handleCloseMenu} to="/contributor">
+                Contributor
+              </StyledNavLink>
+            </DropdownMenuItem>
+          )}
           {user.isAdmin && (
             <DropdownMenuItem>
               <StyledNavLink onClick={handleCloseMenu} to="/admin">
