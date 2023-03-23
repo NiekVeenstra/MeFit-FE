@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
 import styled from "styled-components";
 
-const kCUsername = process.env.REACT_APP_KC_ADMIN_USERNAME
-const kCPassword= process.env.REACT_APP_KC_ADMIN_PASSWORD
-const kCGrantType = process.env.REACT_APP_KC_ADMIN_GRANTTYPE
-const kCClientId = process.env.REACT_APP_KC_ADMIN_CLIENTID
+const kCUsername = process.env.REACT_APP_KC_ADMIN_USERNAME;
+const kCPassword = process.env.REACT_APP_KC_ADMIN_PASSWORD;
+const kCGrantType = process.env.REACT_APP_KC_ADMIN_GRANTTYPE;
+const kCClientId = process.env.REACT_APP_KC_ADMIN_CLIENTID;
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -117,6 +117,11 @@ const AdminPage = () => {
   };
 
   const keycloakAdminDeleteUser = async (userId) => {
+    const confirmation = window.confirm("Are you sure you want to delete this user?");
+    if (!confirmation) {
+      return;
+    }
+
     const adminClient = new KeycloakAdminClient({
       baseUrl: "https://lemur-3.cloud-iam.com/auth",
       realmName: "me-fit-app",
