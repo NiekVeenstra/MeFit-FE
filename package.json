@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
     "@keycloak/keycloak-admin-client": "^21.0.1",
     "@mui/joy": "latest",
     "@mui/material": "^5.11.12",

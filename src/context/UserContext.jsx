@@ -18,15 +18,16 @@ export const useUserProfile = () => {
 
 export const useUserCheck = () => {
   return useContext(UserCheck);
-
+};
 export const useGoals = () => {
+  const [oneGoal, setOneGoal] = useState();
   return useContext(GoalsContext);
 
 };
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
+  const [oneGoal, setOneGoal] = useState();
   const [userProfile, setUserProfile] = useState(
   //   {
   //   weight: "100",
@@ -47,8 +48,8 @@ const UserProvider = ({ children }) => {
   );
   const [userCheck, setUserCheck] = useState(true);
 
-  const [userProfile, setUserProfile] = useState(null);
-  const [oneGoal, setOneGoal] = useState();
+  // const [userProfile, setUserProfile] = useState(null);
+  
 
 
   const stateUser = {
@@ -65,6 +66,7 @@ const UserProvider = ({ children }) => {
   const userCheckProfile = {
     userCheck,
     setUserCheck,
+  };
 
   const stateOneGoal = {
     oneGoal,
