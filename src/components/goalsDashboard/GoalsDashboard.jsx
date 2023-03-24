@@ -8,6 +8,14 @@ import DaysLeft from '../dashboard/DaysLeft'
 import SetGoals from '../dashboard/SetGoals'
 // import Title from '../title'
 
+// const StyledTopDashboard = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   width: 100%;
+//   height: calc(100vh - 3.3rem);
+// `;
 
 
 
