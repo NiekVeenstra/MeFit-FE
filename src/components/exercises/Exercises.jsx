@@ -27,57 +27,63 @@ const StyledPaginationButtonsContainer = styled.div`
 
 const StyledPaginationButton = styled.button`
   padding: 10px;
-  background-color: #FFF;
+  background-color: #fff;
   color: ${(props) => props.theme.colors.textColorDark};
   font-size: ${(props) => props.theme.fontSize.h4};
   margin: 5px;
-  border: 1px solid ${(props) => props.theme.colors.mainColor};;
+  border: 1px solid ${(props) => props.theme.colors.mainColor};
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.mainColor};
-    color: #FFF;
+    color: #fff;
   }
 
   &:disabled {
     background-color: #000;
-    color: #FFF;
+    color: #fff;
     cursor: not-allowed;
   }
 `;
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
-    const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
-    // Calculate the start and end indexes of the exercises to show on the current page
-    const startIndex = (currentPage - 1) * PAGE_SIZE;
-    const endIndex = startIndex + PAGE_SIZE;
+  // Calculate the start and end indexes of the exercises to show on the current page
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
 
-    // Slice the exercises array to show only the exercises on the current page
-    const exercisesToShow = exercises.slice(startIndex, endIndex);
+  // Slice the exercises array to show only the exercises on the current page
+  const exercisesToShow = exercises.slice(startIndex, endIndex);
 
-    const totalPages = Math.ceil(exercises.length / PAGE_SIZE); // Calculate the total number of pages
+  const totalPages = Math.ceil(exercises.length / PAGE_SIZE); // Calculate the total number of pages
 
-    useEffect(() => {
-      const fetchExercisesData = async () => {
-        let exercisesData = [];
+  useEffect(() => {
+    const fetchExercisesData = async () => {
+      let exercisesData = [];
 
-        if(bodyPart === 'all') {
-            exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/', exerciseOptions);
-        } else {
-            exercisesData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, exerciseOptions);    
-        }
-
-        setExercises(exercisesData);
+      if (bodyPart === "all") {
+        exercisesData = await fetchData(
+          "https://exercisedb.p.rapidapi.com/exercises/",
+          exerciseOptions
+        );
+      } else {
+        exercisesData = await fetchData(
+          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
+          exerciseOptions
+        );
       }
 
-      fetchExercisesData();
-    }, [bodyPart])
-    
-    return (
-      <StyledContainer>
+      setExercises(exercisesData);
+    };
+
+    fetchExercisesData();
+  }, [bodyPart, setExercises]);
+
+  return (
+    <StyledContainer>
       <StyledExerciseCardContainer>
         {exercisesToShow.map((exercise, index) => (
           <ExerciseCard key={index} exercise={exercise} />

@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { getUserProfiles } from "../../api/profile/profile";
 import ProfileCreationForm from "../../components/profileCreationForm/ProfileCreationForm";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
-
-import keycloak from "../../keycloak";
 import { keycloakUpdateUserPassword } from "../adminPage/AdminPage";
 
 const StyledProfilePage = styled.div`
@@ -176,7 +174,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getUserData();
-  }, []);
+  }, [getUserData]);
 
   return (
     <StyledProfilePage>

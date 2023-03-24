@@ -222,7 +222,7 @@ export const keycloakUpdateUserPassword = async (userId, newPassword) => {
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(10);
 
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
   const [userToUpdatePassword, setUserToUpdatePassword] = useState(null);
