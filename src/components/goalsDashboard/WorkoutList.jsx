@@ -10,6 +10,8 @@ import {
   Button 
 } from '@mui/material';
 
+const testName = process.env.REACT_APP_RAPID_API_KEY;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(4),
@@ -33,7 +35,7 @@ const WorkoutList = () => {
     const fetchExercises = async () => {
       const response = await fetch('https://exercisedb.p.rapidapi.com/exercises/', {
         headers: {
-          'x-rapidapi-key': '<your-api-key>',
+          'x-rapidapi-key': testName,
           'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
         },
       });

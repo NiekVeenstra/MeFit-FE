@@ -9,7 +9,7 @@ const StyleDaysLeft = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 25%;
+  width: 15rem;
   height: calc(16vh - 3.3rem);
   background-color: ${(props) => props.theme.colors.mainColor};
   color: white;
