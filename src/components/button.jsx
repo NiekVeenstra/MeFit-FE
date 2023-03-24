@@ -4,7 +4,6 @@ import { getOneWorkout } from '../api/apiCall/workouts';
 import { updateWorkout } from '../api/apiCall/updateWorkout';
 import { useGoals } from '../context/UserContext';
 
-
 const Button2 = ({ item }) => {
     const [click, setClick] = useState(false);
     const { oneGoal, setOneGoal } = useGoals();
@@ -12,22 +11,24 @@ const Button2 = ({ item }) => {
     useEffect(() => {
         const fetchData = async () => {
             const oneGoalData = await getOneWorkout(item);
-            setOneGoal(oneGoalData);
-
+            if (oneGoalData.id === item) {
+                setOneGoal(oneGoalData);
+            }
         };
 
         fetchData();
     }, [item, setOneGoal]);
 
     const handleOneGoal = () => {
-        setOneGoal(oneGoal => ({ ...oneGoal, complete: true }));
+        setOneGoal(prevOneGoal => ({ ...prevOneGoal, complete: true }));
         console.log(oneGoal);
-    };
+    }
 
     return (
         <button
             onClick={() => {
-                handleOneGoal();
+                handleOneGoal(item);
+                updateWorkout(item);
                 setClick(!click);
             }}
             style={{
@@ -45,9 +46,3 @@ const Button2 = ({ item }) => {
 };
 
 export default Button2;
-
-
-
-
-
-
