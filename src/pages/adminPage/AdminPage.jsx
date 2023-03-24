@@ -54,7 +54,7 @@ const StyledTable = styled.table`
 `;
 
 const TableContainer = styled.div`
-  overflow-x: auto;
+  /* overflow-x: auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,6 +97,54 @@ const DeleteButton = styled.button`
   }
 `;
 
+const StyledUpdateButton = styled(DeleteButton)`
+ margin-top: 1rem;
+`
+
+const UpdatePasswordButton = styled(DeleteButton)`
+  width:9rem;
+`;
+
+const Modal = styled.div`
+  display: ${(props) => (props.show ? "block" : "none")};
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
+
+const ModalContent = styled.div`
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+
+  h2{
+    margin-bottom: 1rem;
+  }
+`;
+
+const StyledModalLabel = styled.label`
+`
+
+const CloseButton = styled.span`
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  &:hover,
+  &:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+`;
+
 const Select = styled.select`
   padding: 6px;
   border-radius: 5px;
@@ -132,6 +180,9 @@ const AdminPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+  const [userToUpdatePassword, setUserToUpdatePassword] = useState(null);
+
   const keycloakAdminGetUsers = () => {
     const adminClient = new KeycloakAdminClient({
       baseUrl: "https://lemur-3.cloud-iam.com/auth",
@@ -147,8 +198,6 @@ const AdminPage = () => {
       });
 
       const users = await adminClient.users.find();
-
-      console.log(users);
 
       const usersWithRoles = await Promise.all(
         users.map(async (user) => {
@@ -243,6 +292,29 @@ const AdminPage = () => {
     setUsers(updatedUsers);
   };
 
+  const keycloakAdminUpdateUserPassword = async (userId, newPassword) => {
+    const adminClient = new KeycloakAdminClient({
+      baseUrl: "https://lemur-3.cloud-iam.com/auth",
+      realmName: "me-fit-app",
+    });
+
+    await adminClient.auth({
+      username: `${kCUsername}`,
+      password: `${kCPassword}`,
+      grantType: `${kCGrantType}`,
+      clientId: `${kCClientId}`,
+    });
+
+    await adminClient.users.resetPassword({
+      id: userId,
+      credential: {
+        temporary: false,
+        type: "password",
+        value: newPassword,
+      },
+    });
+  };
+
   useEffect(() => {
     keycloakAdminGetUsers();
   }, []);
@@ -301,6 +373,16 @@ const AdminPage = () => {
                     <option value='["ADMIN"]'>Admin</option>
                   </Select>
                 </StyledTd>
+                <StyledTd data-label="Update Password">
+                  <UpdatePasswordButton
+                    onClick={() => {
+                      setShowUpdatePasswordModal(true);
+                      setUserToUpdatePassword(user.id);
+                    }}
+                  >
+                    Update Password
+                  </UpdatePasswordButton>
+                </StyledTd>
                 <StyledTd data-label="Delete">
                   <DeleteButton onClick={() => keycloakAdminDeleteUser(user.id)}>
                     Delete
@@ -312,6 +394,28 @@ const AdminPage = () => {
         </StyledTable>
       </TableContainer>
       <div>{renderPageNumbers}</div>
+      {userToUpdatePassword && (
+        <Modal show={showUpdatePasswordModal}>
+          <ModalContent>
+            <CloseButton onClick={() => setShowUpdatePasswordModal(false)}>&times;</CloseButton>
+            <h2>Update Password</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                keycloakAdminUpdateUserPassword(userToUpdatePassword, e.target.newPassword.value);
+                setShowUpdatePasswordModal(false);
+              }}
+            >
+              <StyledModalLabel>
+                New Password:
+                <input type="password" name="newPassword" required />
+              </StyledModalLabel>
+              <br />
+              <StyledUpdateButton type="submit">Update Password</StyledUpdateButton>
+            </form>
+          </ModalContent>
+        </Modal>
+      )}
     </AdminPanel>
   );
 };
