@@ -1,4 +1,3 @@
-import { useState } from "react";
 const apiUrl = process.env.REACT_APP_API_WORKOUTS;
 
 export const getWorkouts = async () => {

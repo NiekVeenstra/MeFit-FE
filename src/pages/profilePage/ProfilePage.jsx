@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { getUserProfiles } from "../../api/profile/profile";
 import ProfileCreationForm from "../../components/profileCreationForm/ProfileCreationForm";
@@ -157,12 +157,19 @@ const ProfilePage = () => {
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
   const [userToUpdatePassword, setUserToUpdatePassword] = useState(null);
 
-  const getUserData = async () => {
+  // const getUserData = async () => {
+  //   const getUserProfilesData = await getUserProfiles();
+  //   const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
+  //   setUserProfile(checkNum);
+  //   setUserCheck(checkNum.length === 0);
+  // };
+
+  const getUserData = useCallback(async () => {
     const getUserProfilesData = await getUserProfiles();
     const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
     setUserProfile(checkNum);
     setUserCheck(checkNum.length === 0);
-  };
+  }, [user, setUserProfile, setUserCheck]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
