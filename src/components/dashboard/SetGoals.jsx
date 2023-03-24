@@ -7,6 +7,36 @@ import { useGoals } from "../../context/UserContext";
 import WorkoutList from "../goalsDashboard/WorkoutList";
 import ProgramsList from "../goalsDashboard/ProgramsList";
 import { Button } from '@mui/material';
+import styled from "styled-components";
+
+
+const ShowDetailsButton = styled.button`
+  color: ${(props) => props.theme.colors.white};
+  padding: 0.6rem;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 8rem;
+  text-align: center;
+  background-color: ${(props) => props.theme.colors.mainColor};
+  align-items: center;
+`;
+
+const StyleGoalslist = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 15rem;
+  height: calc(16vh - 3.3rem);
+  background-color: ${(props) => props.theme.colors.mainColor};
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0.1rem;
+  padding: 0.6rem;
+  border-radius: 1.5rem;
+  }
+`;
 
 const SetGoals = () => {
     const days = "from this date to this date";
@@ -65,9 +95,9 @@ const SetGoals = () => {
             );
         } else {
             return (
-                <div>
+                <StyleGoalslist>
                     <h3>You have {goals.length} workouts!</h3>
-                </div>
+                </StyleGoalslist>
             );
         }
     };
@@ -76,7 +106,7 @@ const SetGoals = () => {
         // your code for rendering the list of goals goes here
         return (
             <div>
-                <button onClick={() => setShowDetails(!showDetails)} style={{ width: "8rem", border: "solid 2px", borderRadius: "15px", padding: "0.6rem", background: "#0943ef", color: "white" }}>Show details</button>
+                <ShowDetailsButton onClick={() => setShowDetails(!showDetails)}>Show details</ShowDetailsButton>
                 {showDetails && (
                     <div>
                         {/* your code for rendering the details of all goals goes here */}
