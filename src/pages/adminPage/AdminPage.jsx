@@ -12,6 +12,52 @@ const StyledTable = styled.table`
   margin: 20px;
   font-size: 16px;
   width: 100%;
+
+  @media screen and (max-width: 767px) {
+    display: block;
+    width: 90%;
+    thead,
+    tbody {
+      display: block;
+      width: 100%;
+    }
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    tr {
+      display: block;
+      margin-bottom: 0.625em;
+    }
+    td {
+      display: block;
+      text-align: right;
+      position: relative;
+      padding-left: 50%;
+    }
+    td:before {
+      content: attr(data-label);
+      display: block;
+      text-align: left;
+      font-weight: bold;
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+`;
+
+const TableContainer = styled.div`
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StyledTh = styled.th`
@@ -66,6 +112,8 @@ const AdminPanel = styled.div`
   margin: 0 auto;
   max-width: 800px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   @media (min-width: 800px) {
     display: flex;
     flex-direction: column;
@@ -99,6 +147,8 @@ const AdminPage = () => {
       });
 
       const users = await adminClient.users.find();
+
+      console.log(users);
 
       const usersWithRoles = await Promise.all(
         users.map(async (user) => {
@@ -217,45 +267,50 @@ const AdminPage = () => {
   return (
     <AdminPanel>
       <StyledTitle>Admin Panel</StyledTitle>
-      <StyledTable>
-        <thead>
-          <tr>
-            <StyledTh>Username</StyledTh>
-            <StyledTh>First Name</StyledTh>
-            <StyledTh>Last Name</StyledTh>
-            <StyledTh>Roles</StyledTh>
-            <StyledTh>Delete</StyledTh>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((user) => (
-            <tr key={user.id}>
-              <StyledTd>{user.username}</StyledTd>
-              <StyledTd>{user.firstName}</StyledTd>
-              <StyledTd>{user.lastName}</StyledTd>
-              <StyledTd>
-                <Select
-                  value={JSON.stringify(
-                    user.roles.filter(
-                      (role) => role !== "USER" && role !== "default-roles-me-fit-app"
-                    )
-                  )}
-                  onChange={(e) =>
-                    keycloakAdminUpdateUserRoles(user.id, JSON.parse(e.target.value)[0])
-                  }
-                >
-                  <option value="[]">User</option>
-                  <option value='["CONTRIBUTOR"]'>Contributor</option>
-                  <option value='["ADMIN"]'>Admin</option>
-                </Select>
-              </StyledTd>
-              <StyledTd>
-                <DeleteButton onClick={() => keycloakAdminDeleteUser(user.id)}>Delete</DeleteButton>
-              </StyledTd>
+      <TableContainer>
+        <StyledTable>
+          <thead>
+            <tr>
+              <StyledTh>Username</StyledTh>
+              <StyledTh>First Name</StyledTh>
+              <StyledTh>Last Name</StyledTh>
+              <StyledTh>Roles</StyledTh>
+              <StyledTh>E-mail</StyledTh>
             </tr>
-          ))}
-        </tbody>
-      </StyledTable>
+          </thead>
+          <tbody>
+            {currentItems.map((user) => (
+              <tr key={user.id}>
+                <StyledTd data-label="Username">{user.username}</StyledTd>
+                <StyledTd data-label="First Name">{user.firstName}</StyledTd>
+                <StyledTd data-label="Last Name">{user.lastName}</StyledTd>
+                <StyledTd data-label="Last Name">{user.email}</StyledTd>
+                <StyledTd data-label="Roles">
+                  <Select
+                    value={JSON.stringify(
+                      user.roles.filter(
+                        (role) => role !== "USER" && role !== "default-roles-me-fit-app"
+                      )
+                    )}
+                    onChange={(e) =>
+                      keycloakAdminUpdateUserRoles(user.id, JSON.parse(e.target.value)[0])
+                    }
+                  >
+                    <option value="[]">User</option>
+                    <option value='["CONTRIBUTOR"]'>Contributor</option>
+                    <option value='["ADMIN"]'>Admin</option>
+                  </Select>
+                </StyledTd>
+                <StyledTd data-label="Delete">
+                  <DeleteButton onClick={() => keycloakAdminDeleteUser(user.id)}>
+                    Delete
+                  </DeleteButton>
+                </StyledTd>
+              </tr>
+            ))}
+          </tbody>
+        </StyledTable>
+      </TableContainer>
       <div>{renderPageNumbers}</div>
     </AdminPanel>
   );
