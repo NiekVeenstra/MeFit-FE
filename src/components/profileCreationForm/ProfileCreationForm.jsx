@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { updateUserProfile } from "../../api/profile/profile";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
+import { keycloakUpdateUserEmail } from "../../pages/adminPage/AdminPage";
 
 const StyledForm = styled.form`
   display: flex;
@@ -16,7 +17,7 @@ const StyledForm = styled.form`
   border: solid 0.15rem ${(props) => props.theme.colors.mainColor};
   border-radius: 15px;
 
-  @media (max-width: 450px) {
+  @media (max-width: 720px) {
     width: 100%;
     border: none;
   }
@@ -47,12 +48,13 @@ const StyledSubmitButton = styled.button`
 `;
 
 const ProfileCreationForm = () => {
-  const { user } = useUser({});
+  const { user, setUser } = useUser({});
   const { userProfile, setUserProfile } = useUserProfile({});
   const { setUserCheck } = useUserCheck();
 
+  const [email, setEmail] = useState(user.email);
+
   const [setName] = useState(user.firstName);
-  const [setEmail] = useState(user.email);
   const [height, setHeight] = useState("100");
   const [weight, setWeight] = useState("100");
   const [medicalConditions, setMedicalConditions] = useState("none");
@@ -64,6 +66,19 @@ const ProfileCreationForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    try {
+      await keycloakUpdateUserEmail(user.id, email);
+    } catch (error) {
+      console.error("Error updating email:", error);
+      alert("Error updating email");
+    }
+
+    await setUser({
+      ...user,
+      email: email,
+    });
+
     await setUserProfile({
       ...userProfile,
       weight: weight,
@@ -96,6 +111,7 @@ const ProfileCreationForm = () => {
         country: country,
       },
     });
+
     await setUserCheck(false);
   };
 
@@ -108,15 +124,12 @@ const ProfileCreationForm = () => {
             type="text"
             defaultValue={`${user.firstName}`}
             onChange={(event) => setName(event.target.value)}
+            disabled
           />
         </StyledLabel>
         <StyledLabel>
           Email:
-          <input
-            type="email"
-            defaultValue={`${user.email}`}
-            onChange={(event) => setEmail(event.target.value)}
-          />
+          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
         </StyledLabel>
         <StyledLabel>
           Height:

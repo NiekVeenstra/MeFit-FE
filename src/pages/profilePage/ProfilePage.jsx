@@ -4,6 +4,9 @@ import { getUserProfiles } from "../../api/profile/profile";
 import ProfileCreationForm from "../../components/profileCreationForm/ProfileCreationForm";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
 
+import keycloak from "../../keycloak";
+import { keycloakUpdateUserPassword } from "../adminPage/AdminPage";
+
 const StyledProfilePage = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,7 +83,70 @@ const StyledReloadButton = styled.button`
 
 const StyledSvg = styled.svg`
   width: 1.3rem;
-`
+`;
+
+//
+const Modal = styled.div`
+  display: ${(props) => (props.show ? "block" : "none")};
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
+
+const ModalContent = styled.div`
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+`;
+
+const StyledModalLabel = styled.label``;
+
+const CloseButton = styled.span`
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  &:hover,
+  &:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+`;
+
+const DeleteButton = styled.button`
+  background-color: ${(props) => props.theme.colors.mainColor};
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  &:hover {
+    background-color: red;
+  }
+`;
+
+const StyledUpdateButton = styled(DeleteButton)`
+  margin-top: 1rem;
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+`;
 
 const ProfilePage = () => {
   const { user } = useUser({});
@@ -89,6 +155,9 @@ const ProfilePage = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [updateImage, setUpdateImage] = useState(true);
+
+  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+  const [userToUpdatePassword, setUserToUpdatePassword] = useState(null);
 
   const getUserData = async () => {
     const getUserProfilesData = await getUserProfiles();
@@ -108,10 +177,6 @@ const ProfilePage = () => {
   useEffect(() => {
     getUserData();
   }, []);
-
-  // const handleProfileUpdate = () => {
-  //   getUserData();
-  // };
 
   return (
     <StyledProfilePage>
@@ -149,9 +214,41 @@ const ProfilePage = () => {
             <div>Weight: {userProfile[0]?.weight}kg</div>
             <div>Disabilities: {userProfile[0]?.disabilities}</div>
             <div>Medical Conditions: {userProfile[0]?.medicalConditions}</div>
-            <StyledButton onClick={() => setUserCheck(true)}>Edit Profile</StyledButton>
+            <StyledButtonContainer>
+              <StyledButton onClick={() => setUserCheck(true)}>Edit Profile</StyledButton>
+              <StyledButton
+                onClick={() => {
+                  setShowUpdatePasswordModal(true);
+                  setUserToUpdatePassword(user.id);
+                }}
+              >
+                Update Password
+              </StyledButton>
+            </StyledButtonContainer>
           </StyledProfileInfoContainer>
         </StyledUserProfileContainer>
+      )}
+      {userToUpdatePassword && (
+        <Modal show={showUpdatePasswordModal}>
+          <ModalContent>
+            <CloseButton onClick={() => setShowUpdatePasswordModal(false)}>&times;</CloseButton>
+            <h2>Update Password</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                keycloakUpdateUserPassword(userToUpdatePassword, e.target.newPassword.value);
+                setShowUpdatePasswordModal(false);
+              }}
+            >
+              <StyledModalLabel>
+                New Password:
+                <input type="password" name="newPassword" required />
+              </StyledModalLabel>
+              <br />
+              <StyledUpdateButton type="submit">Update Password</StyledUpdateButton>
+            </form>
+          </ModalContent>
+        </Modal>
       )}
     </StyledProfilePage>
   );
