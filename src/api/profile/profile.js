@@ -8,8 +8,7 @@ export const getUserProfiles = async () => {
       throw new Error(`could not complete request`);
     }
     const data = await response.json();
-    console.log(data);
-    return [null, data];
+    return data;
   } catch (error) {
     return [error.message, []];
   }
@@ -22,7 +21,6 @@ export const getUserProfile = async (id) => {
       throw new Error(`could not complete request`);
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     return [error.message, []];
@@ -43,17 +41,79 @@ export const postUserProfile = async (userProfileData) => {
       throw new Error("Could not create user with username");
     }
     const data = await response.json();
-    console.log(data);
-    console.log(data.id);
     return [null, data];
   } catch (error) {
     return [error.message, []];
   }
 };
 
-export const loginUser = async (keycloakData) => {
-  const user = await getUserProfile(keycloakData.id);
-  if (user.id == null) {
-    return await postUserProfile(keycloakData);
+export const patchProfile = async (checkNum, userData) => {
+  const url = `${apiUrl}/${checkNum[0].id}?navigationProperty=Address`;
+  const headers = {
+    "Content-Type": "application/json-patch+json",
+  };
+  const patch = [
+    {
+      path: "/weight",
+      op: "replace",
+      value: userData.weight,
+    },
+    {
+      path: "/height",
+      op: "replace",
+      value: userData.height,
+    },
+    {
+      path: "/medicalConditions",
+      op: "replace",
+      value: userData.medicalConditions,
+    },
+    {
+      path: "/disabilities",
+      op: "replace",
+      value: userData.disabilities,
+    },
+    {
+      path: "/address",
+      op: "replace",
+      value: {
+        addressLine1: userData.address.addressLine1,
+        addressLine2: userData.address.addressLine2,
+        addressLine3: userData.address.addressLine3,
+        city: userData.address.city,
+        country: userData.address.country,
+        postalCode: userData.address.postalCode,
+      },
+    },
+  ];
+
+  fetch(url, {
+    method: "PATCH",
+    headers: headers,
+    body: JSON.stringify(patch),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
+export const updateUserProfile = async (user, userData) => {
+  const getUserProfilesData = await getUserProfiles();
+  const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
+  if (checkNum.length === 0) {
+    postUserProfile(userData);
+  } else {
+    console.log("PATCH");
+    patchProfile(checkNum, userData);
   }
 };

@@ -53,6 +53,14 @@ function App() {
           }
         />
         <Route
+          path="/contributor"
+          element={
+            <KeycloakRoute role={ROLES.Admin || ROLES.Contributor}>
+              <AdminPage />
+            </KeycloakRoute>
+          }
+        />
+        <Route
           path="/admin"
           element={
             <KeycloakRoute role={ROLES.Admin}>

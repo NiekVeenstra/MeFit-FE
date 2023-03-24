@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import keycloak from "../../keycloak";
 import decode from "jwt-decode";
 import styled from "styled-components";
 import { loginUser } from "../../api/userKeycloak/user";
-import { useUser, useUserProfile } from "../../context/UserContext";
+import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { getUserProfile, postUserProfile } from "../../api/profile/profile";
+import { getUserProfiles } from "../../api/profile/profile";
 
 const StyledLoginPage = styled.div`
   display: flex;
@@ -24,17 +24,20 @@ const StyledEnterContainer = styled.div`
   margin: 5rem;
   padding: 1rem;
   text-align: center;
-  @media (max-width: 450px) {
+  @media (max-width: 500px) {
     width: 100%;
     border: none;
   }
 `;
 
 const StyledTitle = styled.h3`
+  font-size: 3rem;
   margin-bottom: 1rem;
 `;
 
 const StyledParagraph = styled.p`
+  font-size: 1.5rem;
+  line-height: 1.5;
   margin-bottom: 1rem;
 `;
 
@@ -44,74 +47,41 @@ const StyledButton = styled.button`
   border-radius: 15px;
   width: 8rem;
   background-color: ${(props) => props.theme.colors.mainColor};
+  font-size: 1.5rem;
 `;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [IdNumber, setIdNumber] = useState(0);
   const { user, setUser } = useUser({
-    id: 0,
-    email: "",
-    firstName: "",
-    lastName: "",
-    isContributor: false,
-    isAdmin: false,
+    // id: 0,
+    // email: "",
+    // firstName: "",
+    // lastName: "",
+    // isContributor: false,
+    // isAdmin: false,
   });
-  const { userProfile, setUserProfile } = useUserProfile({});
 
   useEffect(() => {
     !keycloak.authenticated && keycloak.login();
     const decodedToken = decode(keycloak.token);
-
-    const uuid = decodedToken.sid;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(uuid);
-    crypto.subtle
-      .digest("SHA-256", data)
-      .then((buffer) => {
-        const hex = [...new Uint8Array(buffer)]
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("");
-        const maxNumId = 1000000000; // Set the maximum value for the numId
-        const numId = parseInt(hex, 16) % maxNumId;
-        console.log(numId);
-        setIdNumber(numId);
-      })
-      .catch(console.error);
+    const adminCheck = decodedToken.realm_access.roles.filter((role) => role === "ADMIN");
+    const contributorCheck = decodedToken.realm_access.roles.filter((role) => role === "CONTRIBUTOR");
 
     setUser({
-      id: decodedToken.sid,
+      id: decodedToken.sub,
       email: decodedToken.email,
       firstName: decodedToken.given_name,
       lastName: decodedToken.family_name,
-      isContributor: false,
-      isAdmin: false,
+      isContributor: contributorCheck.length !== 0,
+      isAdmin: adminCheck.length !== 0,
     });
   }, [setUser]);
 
   const handleLogin = async () => {
-    const profileData = await getUserProfile(IdNumber);
-    console.log(userProfile);
-    setUserProfile({
-      ...userProfile,
-      id: IdNumber,
-      // weight: 0,
-      // height: 0,
-      // medicalConditions: "",
-      // disabilities: "",
-      // userId: 0,
-      // address: {
-      //   addressLine1: "string",
-      //   addressLine2: "string",
-      //   addressLine3: "string",
-      //   postalCode: "string",
-      //   city: "string",
-      //   country: "string",
-      // },
-    });
-    console.log(profileData.id);
-    console.log(profileData.id === undefined);
-    if (profileData.id === undefined) {
+    const getUserProfilesData = await getUserProfiles();
+    const checkNum = await getUserProfilesData.filter((profile) => profile.userId === user.id);
+
+    if (checkNum.length === 0) {
       navigate("/profile");
     } else {
       loginUser(user);
@@ -124,10 +94,14 @@ const LoginPage = () => {
       {keycloak.authenticated && (
         <StyledLoginPage>
           <StyledEnterContainer>
+            <StyledTitle>MeFit</StyledTitle>
             <StyledTitle>Welcome</StyledTitle>
             <StyledParagraph>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsa voluptates ut
-              facilis odit ab fugit distinctio sunt aliquid eius?
+              Get ready to achieve your fitness goals with our cutting-edge app! Whether you're
+              looking to build muscle, burn fat, or simply stay active, MeFit has everything you
+              need to make it happen. Our easy-to-use interface, personalized workout plans, and
+              expert guidance will help you unlock your full potential and transform your body and
+              mind.
             </StyledParagraph>
             <StyledButton
               onClick={() => {
