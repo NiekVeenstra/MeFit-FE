@@ -175,6 +175,27 @@ const StyledTitle = styled.h1`
   align-items: center;
 `;
 
+export const keycloakAdminUpdateUserEmail = async (userId, newEmail) => {
+  const adminClient = new KeycloakAdminClient({
+    baseUrl: "https://lemur-3.cloud-iam.com/auth",
+    realmName: "me-fit-app",
+  });
+
+  await adminClient.auth({
+    username: `${kCUsername}`,
+    password: `${kCPassword}`,
+    grantType: `${kCGrantType}`,
+    clientId: `${kCClientId}`,
+  });
+
+  await adminClient.users.update(
+    { id: userId },
+    {
+      email: newEmail,
+    }
+  );
+};
+
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

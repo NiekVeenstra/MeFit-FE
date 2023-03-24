@@ -4,6 +4,8 @@ import { getUserProfiles } from "../../api/profile/profile";
 import ProfileCreationForm from "../../components/profileCreationForm/ProfileCreationForm";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
 
+import keycloak from "../../keycloak";
+
 const StyledProfilePage = styled.div`
   display: flex;
   flex-direction: column;
@@ -108,10 +110,6 @@ const ProfilePage = () => {
   useEffect(() => {
     getUserData();
   }, []);
-
-  // const handleProfileUpdate = () => {
-  //   getUserData();
-  // };
 
   return (
     <StyledProfilePage>
