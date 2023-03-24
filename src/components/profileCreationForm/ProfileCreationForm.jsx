@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { updateUserProfile } from "../../api/profile/profile";
 import { useUser, useUserCheck, useUserProfile } from "../../context/UserContext";
-import { keycloakAdminUpdateUserEmail } from "../../pages/adminPage/AdminPage";
+import { keycloakUpdateUserEmail } from "../../pages/adminPage/AdminPage";
 
 const StyledForm = styled.form`
   display: flex;
@@ -55,7 +55,6 @@ const ProfileCreationForm = () => {
   const [email, setEmail] = useState(user.email);
 
   const [setName] = useState(user.firstName);
-  // const [setEmail] = useState(user.email);
   const [height, setHeight] = useState("100");
   const [weight, setWeight] = useState("100");
   const [medicalConditions, setMedicalConditions] = useState("none");
@@ -69,7 +68,7 @@ const ProfileCreationForm = () => {
     event.preventDefault();
 
     try {
-      await keycloakAdminUpdateUserEmail(user.id, email);
+      await keycloakUpdateUserEmail(user.id, email);
     } catch (error) {
       console.error("Error updating email:", error);
       alert("Error updating email");
