@@ -19,7 +19,7 @@ const DaysLeft = () => {
       style={{
         color: "white",
         borderRadius: "15px",
-        backgroundColor: "blue",
+        backgroundColor: "#0943ef",
         display: "inline-block",
         marginTop: "25px",
         padding: "10px",

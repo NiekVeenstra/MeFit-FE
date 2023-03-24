@@ -1,30 +1,31 @@
-const apiUrl = process.env.REACT_APP_API_WORKOUTS;
-
-
-export async function updateWorkout(id) {
-    const patchData = {
-        op: "replace",
+export const updateWorkout = async (id) => {
+    const url = `https://mefitapi-production.up.railway.app/api/Workouts/${id}`;
+    const headers = {
+      "Content-Type": "application/json-patch+json",
+    };
+    const patch = [
+      {
         path: "/complete",
+        op: "replace",
         value: "true",
-      };
-    try {
-        const response = await fetch(`${apiUrl}/${id}}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(patchData),        })
-            .then((response) => response.json())
-            .then(function (workouts) { console.log('Workout updated:', workouts) });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+      },
+    ];
+    fetch(url, {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify(patch),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-
-        const data = await response.json();
-        return data;
-
-    } catch (error) {
-        console.error('Error updating workout:', error);
-    }
-};
+      })
+      .then((workouts) => {
+        console.log('Workout updated:', workouts);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
