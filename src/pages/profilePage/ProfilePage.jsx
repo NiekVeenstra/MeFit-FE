@@ -106,9 +106,28 @@ const ModalContent = styled.div`
   h2 {
     margin-bottom: 1rem;
   }
+
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
-const StyledModalLabel = styled.label``;
+const StyledModalContainer = styled.div`
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 90%;
+  margin-top: 1rem;
+  border:solid red 1px;
+`
+
+const StyledModalLabel = styled.label`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 const CloseButton = styled.span`
   color: #aaaaaa;
@@ -163,6 +182,34 @@ const ProfilePage = () => {
   //   setUserProfile(checkNum);
   //   setUserCheck(checkNum.length === 0);
   // };
+
+  const validatePassword = (password) => {
+    const hasCapitalLetter = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasMinimumLength = password.length >= 8;
+
+    return hasCapitalLetter && hasNumber && hasSpecialCharacter && hasMinimumLength;
+  };
+
+  const handlePasswordUpdate = (e) => {
+    e.preventDefault();
+    const newPassword = e.target.newPassword.value;
+    const confirmPassword = e.target.confirmPassword.value;
+
+    if (newPassword === confirmPassword) {
+      if (validatePassword(newPassword)) {
+        keycloakUpdateUserPassword(userToUpdatePassword, newPassword);
+        setShowUpdatePasswordModal(false);
+      } else {
+        alert(
+          "Password must contain at least one capital letter and one number and one special character and be at least 8 characters long."
+        );
+      }
+    } else {
+      alert("Passwords do not match. Please try again.");
+    }
+  };
 
   const getUserData = useCallback(async () => {
     const getUserProfilesData = await getUserProfiles();
@@ -238,17 +285,18 @@ const ProfilePage = () => {
           <ModalContent>
             <CloseButton onClick={() => setShowUpdatePasswordModal(false)}>&times;</CloseButton>
             <h2>Update Password</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                keycloakUpdateUserPassword(userToUpdatePassword, e.target.newPassword.value);
-                setShowUpdatePasswordModal(false);
-              }}
-            >
-              <StyledModalLabel>
-                New Password:
-                <input type="password" name="newPassword" required />
-              </StyledModalLabel>
+            <form onSubmit={handlePasswordUpdate}>
+              <StyledModalContainer>
+                <StyledModalLabel>
+                  New Password:
+                  <input type="password" name="newPassword" required />
+                </StyledModalLabel>
+                <br />
+                <StyledModalLabel>
+                  Confirm New Password:
+                  <input type="password" name="confirmPassword" required />
+                </StyledModalLabel>
+              </StyledModalContainer>
               <br />
               <StyledUpdateButton type="submit">Update Password</StyledUpdateButton>
             </form>
