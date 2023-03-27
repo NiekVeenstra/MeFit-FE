@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 
 const StyledExerciseCardContainer = styled.div`
@@ -9,7 +10,7 @@ const StyledExerciseCardContainer = styled.div`
   width: 45%;
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
   width: 100%;
   border: 2px solid ${(props) => props.theme.colors.mainColor};
   border-radius: 10px;
@@ -41,7 +42,7 @@ const StyledExerciseCardName = styled.p`
 const ExerciseCard = ({ exercise }) => {
   return (
     <StyledExerciseCardContainer>
-      <StyledLink href={`/exercise/${exercise.id}`}>
+      <StyledLink to={`/exercise/${exercise.id}`}>
         <StyledExerciseCardImage src={exercise.gifUrl} alt={exercise.name} loading="lazy" />
         <div>
           <StyledExerciseCardName>{exercise.name}</StyledExerciseCardName>
