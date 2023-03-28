@@ -83,7 +83,6 @@ const StyledSvg = styled.svg`
   width: 1.3rem;
 `;
 
-//
 const Modal = styled.div`
   display: ${(props) => (props.show ? "block" : "none")};
   position: fixed;
@@ -102,6 +101,7 @@ const ModalContent = styled.div`
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  max-width: 600px;
 
   h2 {
     margin-bottom: 1rem;
@@ -119,7 +119,6 @@ const StyledModalContainer = styled.div`
   justify-content: space-around;
   width: 90%;
   margin-top: 1rem;
-  border:solid red 1px;
 `
 
 const StyledModalLabel = styled.label`
