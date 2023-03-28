@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useUser } from "../../context/UserContext";
 import keycloak from "../../keycloak";
 
 const DropdownWrapper = styled.div`
@@ -11,7 +12,6 @@ const DropdownWrapper = styled.div`
 const DropdownToggle = styled.button`
   color: ${(props) => props.theme.colors.white};
   padding: 0.6rem;
-  //border: 0.1rem solid ${(props) => props.theme.colors.black};
   border-radius: 15px;
   width: 8rem;
   background-color: ${(props) => props.theme.colors.mainColor};
@@ -38,13 +38,35 @@ const DropdownMenuItem = styled.li`
   transition: 0.3s;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.backgroundColorActive};
+    background-color: ${(props) => props.theme.colors.mainColor};
+    color: ${(props) => props.theme.colors.white}!important;
+  }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  padding: 0.4rem 0;
+
+  &:hover {
     color: ${(props) => props.theme.colors.white};
   }
 `;
 
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser();
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [menuRef]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -58,44 +80,51 @@ const DropdownMenu = () => {
   };
 
   const handleCloseMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(false);
   };
+
   return (
-    <DropdownWrapper>
+    <DropdownWrapper ref={menuRef}>
       <DropdownToggle onClick={toggleDropdown}>Menu</DropdownToggle>
       {isOpen && (
         <DropdownMenuContainer>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/">
+            <StyledNavLink onClick={handleCloseMenu} to="/">
               Start
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/dashboard">
+            <StyledNavLink onClick={handleCloseMenu} to="/dashboard">
               Dashboard
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/exercises">
+            <StyledNavLink onClick={handleCloseMenu} to="/exercises">
               Exercises
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/user">
-              User
-            </NavLink>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/profile">
+            <StyledNavLink onClick={handleCloseMenu} to="/profile">
               Profile
-            </NavLink>
+            </StyledNavLink>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <NavLink onClick={handleCloseMenu} to="/admin">
-              Admin
-            </NavLink>
+          {(user.isContributor || user.isAdmin) && (
+            <DropdownMenuItem>
+              <StyledNavLink onClick={handleCloseMenu} to="/contributor">
+                Contributor
+              </StyledNavLink>
+            </DropdownMenuItem>
+          )}
+          {user.isAdmin && (
+            <DropdownMenuItem>
+              <StyledNavLink onClick={handleCloseMenu} to="/admin">
+                Admin
+              </StyledNavLink>
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem onClick={handleLogoutClick}>
+            <StyledNavLink>Logout</StyledNavLink>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogoutClick}>Logout</DropdownMenuItem>
         </DropdownMenuContainer>
       )}
     </DropdownWrapper>

@@ -1,7 +1,37 @@
 import React, {useEffect, useState} from "react";
 import { exerciseOptions, fetchData } from "../../utils/fetchData";
+import styled from "styled-components";
 
 import ExercisesBox from "../exercisesBox/ExercisesBox";
+
+
+const StyledSearchExercises = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+const StyledSearchContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledInput = styled.input`
+  padding: 0.6rem;
+  border-radius: 15px;
+  margin-right: 20px;
+  width: 50%;
+`;
+
+const StyledButton = styled.button`
+  color: ${(props) => props.theme.colors.white};
+  padding: 0.6rem;
+  border-radius: 15px;
+  width: 8rem;
+  background-color: ${(props) => props.theme.colors.mainColor};
+`;
 
 const SearchExercises = ( {setExercises, bodyPart, setBodyPart} ) => {
     const [search, setSearch] = useState('');
@@ -35,17 +65,16 @@ const SearchExercises = ( {setExercises, bodyPart, setBodyPart} ) => {
     } 
 
     return (
-        <div>
+        <StyledSearchExercises>
             <h1>Search Exercises</h1>
+            <StyledSearchContainer>
+                <StyledInput onChange={(e) => setSearch(e.target.value.toLowerCase())} type="text" placeholder="deadlift" />
+                <StyledButton onClick={handleSearch}>Search</StyledButton>
+            </StyledSearchContainer>
             <div>
-                <input onChange={(e) => setSearch(e.target.value.toLowerCase())} type="text" placeholder="deadlift" />
-                <button onClick={handleSearch}>Search</button>
-            </div>
-            <div>
-                {/* {console.log(bodyParts)} */}
                 <ExercisesBox data={bodyParts} bodyPart={bodyPart} setBodyPart={setBodyPart} />
             </div>
-        </div>
+        </StyledSearchExercises>
         
     )
 }

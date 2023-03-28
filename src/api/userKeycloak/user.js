@@ -8,7 +8,6 @@ export const getUsers = async () => {
       throw new Error(`could not complete request`);
     }
     const data = await response.json();
-    console.log(data);
     return [null, data];
   } catch (error) {
     return [error.message, []];
@@ -22,7 +21,6 @@ export const getUser = async (id) => {
       throw new Error(`could not complete request`);
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     return [error.message, []];
