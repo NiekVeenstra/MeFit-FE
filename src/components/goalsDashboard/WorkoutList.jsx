@@ -1,93 +1,100 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@mui/styles';
-import { 
-  Container, 
-  Typography, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  Checkbox, 
-  Button 
-} from '@mui/material';
+import { Button, List, ListItem, ListItemText } from '@mui/material';
+import { useListCheck } from '../../context/UserContext';
 
-const testName = process.env.REACT_APP_RAPID_API_KEY;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-  },
-  list: {
-    backgroundColor: theme.palette.background.paper,
-    padding: 0,
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-}));
+const EXERCISES_API_URL = 'https://exercisedb.p.rapidapi.com/exercises/';
+const GOALS_API_URL = 'https://mefitapi-production.up.railway.app/api/Workouts';
 
 const WorkoutList = () => {
-  const classes = useStyles();
-  const [exercises, setExercises] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]);
+  const { listWorkout, setListWorkout } = useListCheck();
 
   useEffect(() => {
-    const fetchExercises = async () => {
-      const response = await fetch('https://exercisedb.p.rapidapi.com/exercises/', {
-        headers: {
-          'x-rapidapi-key': testName,
-          'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-        },
-      });
-      const data = await response.json();
-      setExercises(data.exercises);
-    };
-
-    fetchExercises();
+    // Fetch the exercises from the API
+    fetch(EXERCISES_API_URL, {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
+        'x-rapidapi-key': process.env.REACT_APP_RAPID_API_KEY // Replace with your RapidAPI key
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Shuffle the exercises array
+        const shuffledExercises = data.sort(() => 0.5 - Math.random());
+        // Take the first 3 exercises of each workout
+        const workouts = shuffledExercises.slice(0, Math.min(shuffledExercises.length, 21)).reduce((acc, val, i, arr) => {
+          if (i % 3 === 0) {
+            acc.push(arr.slice(i, i + 3));
+          }
+          return acc;
+        }, []);
+        setWorkouts(workouts);
+      })
+      .catch(error => console.error(error));
   }, []);
 
-  const handleToggleExercise = (exercise) => {
-    if (selectedExercises.includes(exercise)) {
-      setSelectedExercises(selectedExercises.filter((e) => e !== exercise));
-    } else if (selectedExercises.length < 7) {
-      setSelectedExercises([...selectedExercises, exercise]);
+  const handleExerciseClick = (exercise) => {
+    // Check if the exercise is already selected
+    if (!selectedExercises.includes(exercise)) {
+      // Check if we have already selected 7 exercises
+      if (selectedExercises.length < 7) {
+        setSelectedExercises([...selectedExercises, exercise]);
+      } else {
+        alert('You can only select up to 7 exercises');
+      }
+    } else {
+      setSelectedExercises(selectedExercises.filter(e => e !== exercise));
     }
-  };
+  }
 
-  const handleSubmit = () => {
-    console.log('Selected exercises:', selectedExercises);
-  };
+  const handleSaveClick = () => {
+
+    setListWorkout(false);
+    // Save the selected exercises to the user database
+    fetch(GOALS_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        exercises: selectedExercises
+      })
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+    // Clear the selection
+    setSelectedExercises([]);
+  }
 
   return (
-    <Container maxWidth="md" className={classes.root}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Workout List
-      </Typography>
-      <List className={classes.list}>
-        {exercises.map((exercise) => (
-          <ListItem 
-            key={exercise.id} 
-            dense 
-            button 
-            onClick={() => handleToggleExercise(exercise)}
-          >
-            <Checkbox 
-              checked={selectedExercises.includes(exercise)}
-              disabled={selectedExercises.length === 7 && !selectedExercises.includes(exercise)}
-            />
-            <ListItemText primary={exercise.name} secondary={exercise.category} />
+    <div>
+      <List>
+        {workouts.map((workout, i) => (
+          <ListItem key={i}>
+            <ListItemText primary={`Workout ${i + 1}`} />
+            <List>
+              {workout.map((exercise, j) => (
+                <ListItem
+                  key={`${i}-${j}`}
+                  button
+                  selected={selectedExercises.includes(exercise)}
+                  onClick={() => handleExerciseClick(exercise)}
+                >
+                  <ListItemText primary={exercise.name} />
+                </ListItem>
+              ))}
+            </List>
           </ListItem>
+
         ))}
       </List>
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={handleSubmit} 
-        className={classes.button}
-      >
-        Submit
-      </Button>
-    </Container>
+      {selectedExercises.length > 0 && (
+        <Button variant="contained" color="primary" onClick={handleSaveClick}>Save</Button>
+      )}
+    </div>
   );
 };
 

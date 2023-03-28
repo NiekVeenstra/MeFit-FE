@@ -3,7 +3,7 @@ import Button2 from "../button";
 import { useState, useEffect } from "react";
 import { getWorkouts } from '../../api/apiCall/workouts'
 import { updateWorkout } from '../../api/apiCall/updateWorkout'
-import { useGoals } from "../../context/UserContext";
+import { useGoals, useListCheck } from "../../context/UserContext";
 import WorkoutList from "../goalsDashboard/WorkoutList";
 import ProgramsList from "../goalsDashboard/ProgramsList";
 import { Button } from '@mui/material';
@@ -19,6 +19,7 @@ const ShowDetailsButton = styled.button`
   text-align: center;
   background-color: ${(props) => props.theme.colors.mainColor};
   align-items: center;
+  margin: 1rem 0;
 `;
 
 const StyleGoalslist = styled.div`
@@ -35,11 +36,37 @@ const StyleGoalslist = styled.div`
   margin: 0.1rem;
   padding: 0.6rem;
   border-radius: 1.5rem;
-  }
 `;
+const StyleCompletedlist = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
+  h3, p {
+    margin: 2rem;
+}
+`;
+const StylelistedGoals = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.mainColor};
+  padding: 2rem;
+  border-radius: 1.5rem;
+  `;
+const StyleDivComplete = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  `;
+const StyleParagraphlist = styled.p`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
+ 
+    margin: 2rem;
+    `;
 
 const SetGoals = () => {
-    const days = "from this date to this date";
+    const days = "from Monday March 27th 2023 to Sunday April 2nd 2023";
     const status = "in progress";
     // const goals = [];
     const [goals, setGoals] = useState([])
@@ -49,47 +76,17 @@ const SetGoals = () => {
 
     };
 
-
     const ShowAllWorkouts = () => {
+        const { listWorkout, setListWorkout } = useListCheck(false);
         if (goals.length === 0) {
-            const CallWorkoutListButton = () => {
-                const handleCallExerciseList = () => {
-                    WorkoutList();
-                };
-
-                return (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleCallExerciseList}
-                    >
-                        Select Workouts
-                    </Button>
-                );
-            };
-            const CallProgramListButton = () => {
-                const handleProgramList = () => {
-                    ProgramsList();
-                };
-
-                return (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleProgramList}
-                    >
-                        Select Program
-                    </Button>
-                );
-            };
 
             return (
                 <div>
                     <>
                         <h3>You have no workouts yet!</h3>
                         <p>Click the button below to add a new workouts or a full program!</p>
-                        {CallWorkoutListButton()}
-                        {<CallProgramListButton />}
+                        <button variant="contained" onClick={() => setListWorkout(true)}>View Workout List</button> {/* add a button to call the WorkoutList function */}
+                        {listWorkout && <WorkoutList />}
                     </>
                 </div>
             );
@@ -106,30 +103,31 @@ const SetGoals = () => {
         // your code for rendering the list of goals goes here
         return (
             <div>
-                <ShowDetailsButton onClick={() => setShowDetails(!showDetails)}>Show details</ShowDetailsButton>
+
+                <ShowDetailsButton onClick={() => setShowDetails(prevState => !prevState)}>Show details</ShowDetailsButton>
                 {showDetails && (
-                    <div>
+                    <StylelistedGoals>
                         {/* your code for rendering the details of all goals goes here */}
-                        <p>PERIOD: {days}.</p>
-                        <p>Status: {status}.</p>
-                        <p> All workouts for the goal, completed and pending</p>
+                        <StyleParagraphlist>PERIOD: {days}.</StyleParagraphlist>
+                        <StyleParagraphlist>Status: {status}.</StyleParagraphlist>
+                        <p> All workouts for your goal:</p>
                         {goals.map((workout, index) => {
                             var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
 
                             return (
                                 <div key={index}>
-                                    <h3>{workout.name}</h3>
-                                    <p>{workout.complete ? "Completed" : "Not Completed"}</p>
-
-                                    {/* // create a button for completion of workout market as "Not Completed" */}
-                                    {ShowButton}
-
+                                    <StyleCompletedlist>
+                                        <StyleDivComplete>
+                                            <h3>{workout.name}</h3>
+                                            <p>{workout.complete ? "Completed" : "Not Completed"}</p>
+                                        </StyleDivComplete>
+                                        {ShowButton}
+                                    </StyleCompletedlist>
                                 </div>
                             );
                         })}
                         <p>The reference to the users previously achieved goals</p>
-                        {/* {userData.userWorkouts[1].workoutCompletion} */}
-                    </div>
+                    </StylelistedGoals>
                 )}
             </div>
         );
