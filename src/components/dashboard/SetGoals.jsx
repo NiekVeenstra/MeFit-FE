@@ -49,47 +49,17 @@ const SetGoals = () => {
 
     };
 
-
     const ShowAllWorkouts = () => {
-        if (goals.length === 0) {
-            const CallWorkoutListButton = () => {
-                const handleCallExerciseList = () => {
-                    WorkoutList();
-                };
-
-                return (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleCallExerciseList}
-                    >
-                        Select Workouts
-                    </Button>
-                );
-            };
-            const CallProgramListButton = () => {
-                const handleProgramList = () => {
-                    ProgramsList();
-                };
-
-                return (
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleProgramList}
-                    >
-                        Select Program
-                    </Button>
-                );
-            };
-
+        if (goals.length === 0) { 
+            const handleClick = () => {
+                WorkoutList(); // call the WorkoutList function
+              };
             return (
                 <div>
                     <>
                         <h3>You have no workouts yet!</h3>
                         <p>Click the button below to add a new workouts or a full program!</p>
-                        {CallWorkoutListButton()}
-                        {<CallProgramListButton />}
+                        <Button variant="contained" onClick={handleClick}>View Workout List</Button> {/* add a button to call the WorkoutList function */}
                     </>
                 </div>
             );
@@ -120,23 +90,19 @@ const SetGoals = () => {
                                 <div key={index}>
                                     <h3>{workout.name}</h3>
                                     <p>{workout.complete ? "Completed" : "Not Completed"}</p>
-
-                                    {/* // create a button for completion of workout market as "Not Completed" */}
                                     {ShowButton}
-
                                 </div>
                             );
                         })}
                         <p>The reference to the users previously achieved goals</p>
-                        {/* {userData.userWorkouts[1].workoutCompletion} */}
                     </div>
                 )}
             </div>
         );
     }
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
     return (
         <div>
             <div>
