@@ -11,6 +11,9 @@ const StyledExerciseVideosContainer = styled.div`
 const StyledExerciseVideosMessage = styled.div`
   font-size: ${(props) => props.theme.fontSize.h3};
   font-weight: bold;
+  @media (max-width: 500px){
+    margin-bottom: 20px;
+  }
 `;
 
 const StyledExerciseVideosLinkContainer = styled.div`
@@ -29,11 +32,17 @@ const StyledExerciseVideosLink = styled.a`
 const StyledExerciseVideosImage = styled.img`
   width: 200px;
   margin-bottom: 0.5rem;
+  @media (max-width: 500px){
+    margin-bottom: 5px;
+  }
 `;
 
 const StyledExerciseVideosTitle = styled.div`
   font-size: ${(props) => props.theme.fontSize.h4};
   font-weight: bold;
+  @media (max-width: 500px){
+    margin-bottom: 20px;
+  }
 `;
 
 const ExerciseVideos = ({ exerciseVideos, name }) => {
