@@ -103,7 +103,6 @@ const SetGoals = () => {
         // your code for rendering the list of goals goes here
         return (
             <div>
-
                 <ShowDetailsButton onClick={() => setShowDetails(prevState => !prevState)}>Show details</ShowDetailsButton>
                 {showDetails && (
                     <StylelistedGoals>
@@ -112,7 +111,7 @@ const SetGoals = () => {
                         <StyleParagraphlist>Status: {status}.</StyleParagraphlist>
                         <p> All workouts for your goal:</p>
                         {goals.map((workout, index) => {
-                            var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
+                            var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} updateProgress={updateProgress} /> : null;
 
                             return (
                                 <div key={index}>

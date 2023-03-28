@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { getOneWorkout } from '../api/apiCall/workouts';
 import { updateWorkout } from '../api/apiCall/updateWorkout';
 import { useGoals } from '../context/UserContext';
-import ProgressBar from './dashboard/ProgressBar';
 
 const Button2 = ({ item }) => {
     const [click, setClick] = useState(false);
@@ -41,11 +40,13 @@ const Button2 = ({ item }) => {
                 borderRadius: "15px",
                 padding: "0.6rem",
                 background: "blue",
-                color: "white"
+                color: "white",
+                height: "45px",
+                alignSelf: "center"
 
             }}
         >
-            {click ? "clicked" : "not clicked"}
+            {click ? "selected" : "not selected"}
         </button>
 
     );
