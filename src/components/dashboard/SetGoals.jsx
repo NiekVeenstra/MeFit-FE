@@ -3,7 +3,7 @@ import Button2 from "../button";
 import { useState, useEffect } from "react";
 import { getWorkouts } from '../../api/apiCall/workouts'
 import { updateWorkout } from '../../api/apiCall/updateWorkout'
-import { useGoals } from "../../context/UserContext";
+import { useGoals, useListCheck } from "../../context/UserContext";
 import WorkoutList from "../goalsDashboard/WorkoutList";
 import ProgramsList from "../goalsDashboard/ProgramsList";
 import { Button } from '@mui/material';
@@ -50,16 +50,16 @@ const SetGoals = () => {
     };
 
     const ShowAllWorkouts = () => {
-        if (goals.length === 0) { 
-            const handleClick = () => {
-                WorkoutList(); // call the WorkoutList function
-              };
+        const { listWorkout, setListWorkout } = useListCheck(false);
+        if (goals.length === 0) {
+
             return (
                 <div>
                     <>
                         <h3>You have no workouts yet!</h3>
                         <p>Click the button below to add a new workouts or a full program!</p>
-                        <Button variant="contained" onClick={handleClick}>View Workout List</Button> {/* add a button to call the WorkoutList function */}
+                        <button variant="contained" onClick={() => setListWorkout(true)}>View Workout List</button> {/* add a button to call the WorkoutList function */}
+                        {listWorkout && <WorkoutList />}
                     </>
                 </div>
             );
@@ -76,7 +76,8 @@ const SetGoals = () => {
         // your code for rendering the list of goals goes here
         return (
             <div>
-                <ShowDetailsButton onClick={() => setShowDetails(!showDetails)}>Show details</ShowDetailsButton>
+
+                <ShowDetailsButton onClick={() => setShowDetails(prevState => !prevState)}>Show details</ShowDetailsButton>
                 {showDetails && (
                     <div>
                         {/* your code for rendering the details of all goals goes here */}
@@ -100,9 +101,9 @@ const SetGoals = () => {
             </div>
         );
     }
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
+    useEffect(() => {
+        fetchData();
+    }, []);
     return (
         <div>
             <div>

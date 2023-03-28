@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, List, ListItem, ListItemText } from '@mui/material';
+import { useListCheck } from '../../context/UserContext';
 
 const EXERCISES_API_URL = 'https://exercisedb.p.rapidapi.com/exercises/';
 const GOALS_API_URL = 'https://mefitapi-production.up.railway.app/api/Goals';
@@ -7,6 +8,7 @@ const GOALS_API_URL = 'https://mefitapi-production.up.railway.app/api/Goals';
 const WorkoutList = () => {
   const [workouts, setWorkouts] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]);
+  const { listWorkout, setListWorkout } = useListCheck();
 
   useEffect(() => {
     // Fetch the exercises from the API
@@ -48,6 +50,8 @@ const WorkoutList = () => {
   }
 
   const handleSaveClick = () => {
+
+    setListWorkout(false);
     // Save the selected exercises to the user database
     fetch(GOALS_API_URL, {
       method: 'POST',
@@ -84,6 +88,7 @@ const WorkoutList = () => {
               ))}
             </List>
           </ListItem>
+
         ))}
       </List>
       {selectedExercises.length > 0 && (

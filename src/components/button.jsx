@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getOneWorkout } from '../api/apiCall/workouts';
 import { updateWorkout } from '../api/apiCall/updateWorkout';
 import { useGoals } from '../context/UserContext';
+import ProgressBar from './dashboard/ProgressBar';
 
 const Button2 = ({ item }) => {
     const [click, setClick] = useState(false);
@@ -25,11 +26,14 @@ const Button2 = ({ item }) => {
     }
 
     return (
+
         <button
+
             onClick={() => {
                 handleOneGoal(item);
                 updateWorkout(item);
                 setClick(!click);
+
             }}
             style={{
                 width: "6rem",
@@ -42,6 +46,7 @@ const Button2 = ({ item }) => {
         >
             {click ? "clicked" : "not clicked"}
         </button>
+
     );
 };
 
