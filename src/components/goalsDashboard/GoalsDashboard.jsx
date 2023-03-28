@@ -11,7 +11,7 @@ const StyledTopDashboard = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: calc(100vh - 3.3rem);
+  overflow: hidden;
 `;
 
 const StyledGoalsTexth3 = styled.h3`

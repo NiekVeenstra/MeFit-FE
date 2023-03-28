@@ -23,7 +23,7 @@ const StyleDaysLeft = styled.div`
 
 const DaysLeft = () => {
   const [days, setDays] = useState(0);
-  const deadline = "March, 28, 2023";
+  const deadline = "April, 3, 2023";
   const getTime = () => {
     const time = Date.parse(deadline) - Date.now();
     setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
@@ -38,7 +38,7 @@ const DaysLeft = () => {
     <StyleDaysLeft role="timer">
       <p> You have</p>
       <div >
-      <p id="day">{days < 10 ? "0" + days : days}</p>
+        <p id="day">{days < 10 ? "0" + days : days}</p>
       </div>
       <p>days left</p>
     </StyleDaysLeft>

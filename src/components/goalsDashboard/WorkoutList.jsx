@@ -3,7 +3,7 @@ import { Button, List, ListItem, ListItemText } from '@mui/material';
 import { useListCheck } from '../../context/UserContext';
 
 const EXERCISES_API_URL = 'https://exercisedb.p.rapidapi.com/exercises/';
-const GOALS_API_URL = 'https://mefitapi-production.up.railway.app/api/Goals';
+const GOALS_API_URL = 'https://mefitapi-production.up.railway.app/api/Workouts';
 
 const WorkoutList = () => {
   const [workouts, setWorkouts] = useState([]);

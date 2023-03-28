@@ -19,6 +19,7 @@ const ShowDetailsButton = styled.button`
   text-align: center;
   background-color: ${(props) => props.theme.colors.mainColor};
   align-items: center;
+  margin: 1rem 0;
 `;
 
 const StyleGoalslist = styled.div`
@@ -35,11 +36,37 @@ const StyleGoalslist = styled.div`
   margin: 0.1rem;
   padding: 0.6rem;
   border-radius: 1.5rem;
-  }
 `;
+const StyleCompletedlist = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
+  h3, p {
+    margin: 2rem;
+}
+`;
+const StylelistedGoals = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.mainColor};
+  padding: 2rem;
+  border-radius: 1.5rem;
+  `;
+const StyleDivComplete = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  `;
+const StyleParagraphlist = styled.p`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
+ 
+    margin: 2rem;
+    `;
 
 const SetGoals = () => {
-    const days = "from this date to this date";
+    const days = "from Monday March 27th 2023 to Sunday April 2nd 2023";
     const status = "in progress";
     // const goals = [];
     const [goals, setGoals] = useState([])
@@ -79,24 +106,28 @@ const SetGoals = () => {
 
                 <ShowDetailsButton onClick={() => setShowDetails(prevState => !prevState)}>Show details</ShowDetailsButton>
                 {showDetails && (
-                    <div>
+                    <StylelistedGoals>
                         {/* your code for rendering the details of all goals goes here */}
-                        <p>PERIOD: {days}.</p>
-                        <p>Status: {status}.</p>
-                        <p> All workouts for the goal, completed and pending</p>
+                        <StyleParagraphlist>PERIOD: {days}.</StyleParagraphlist>
+                        <StyleParagraphlist>Status: {status}.</StyleParagraphlist>
+                        <p> All workouts for your goal:</p>
                         {goals.map((workout, index) => {
                             var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
 
                             return (
                                 <div key={index}>
-                                    <h3>{workout.name}</h3>
-                                    <p>{workout.complete ? "Completed" : "Not Completed"}</p>
-                                    {ShowButton}
+                                    <StyleCompletedlist>
+                                        <StyleDivComplete>
+                                            <h3>{workout.name}</h3>
+                                            <p>{workout.complete ? "Completed" : "Not Completed"}</p>
+                                        </StyleDivComplete>
+                                        {ShowButton}
+                                    </StyleCompletedlist>
                                 </div>
                             );
                         })}
                         <p>The reference to the users previously achieved goals</p>
-                    </div>
+                    </StylelistedGoals>
                 )}
             </div>
         );

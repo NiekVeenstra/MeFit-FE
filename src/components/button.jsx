@@ -42,6 +42,7 @@ const Button2 = ({ item }) => {
                 padding: "0.6rem",
                 background: "blue",
                 color: "white"
+
             }}
         >
             {click ? "clicked" : "not clicked"}
