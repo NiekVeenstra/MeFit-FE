@@ -8,6 +8,9 @@ const StyledExerciseCardContainer = styled.div`
   align-items: center;
   margin: 1rem;
   width: 45%;
+  @media (max-width: 500px){
+    width:100%;
+  }
 `;
 
 const StyledLink = styled(Link)`
