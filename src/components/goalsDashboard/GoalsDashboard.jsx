@@ -1,26 +1,40 @@
 import React from 'react'
-// import Chart from '../../components/dashboard/Chart'
-// import GoalsInfo from '../dashboard/GoalsInfo'
-
+import styled from "styled-components";
 import Calendar from '../dashboard/Calendar'
 import ProgressBar from '../dashboard/ProgressBar'
 import DaysLeft from '../dashboard/DaysLeft'
 import SetGoals from '../dashboard/SetGoals'
-// import Title from '../title'
 
+const StyledTopDashboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+`;
 
-
+const StyledGoalsTexth3 = styled.h3`
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: ${(props) => props.theme.fontSize.h3};
+`;
+const StyledGoalsTexth1 = styled.h1`
+  margin: 10;
+  font-family: "Montserrat", sans-serif;
+  font-size: ${(props) => props.theme.fontSize.h3};
+`;
 
 const GoalsDashboard = () => {
   return (
-    <div>
-      <h2>Goals Dashboard</h2>
+    <StyledTopDashboard>
+      <StyledGoalsTexth1>Dashboard</StyledGoalsTexth1>
       <Calendar />
       <ProgressBar />
       <DaysLeft />
-      <h3> Your Goals:</h3>
+      <StyledGoalsTexth3> Your Goals:</StyledGoalsTexth3>
       <SetGoals />
-    </div>
+    </StyledTopDashboard>
   )
 }
 

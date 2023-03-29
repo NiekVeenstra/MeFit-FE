@@ -1,9 +1,29 @@
+import { border } from "@mui/system";
 import React from "react";
 import { useState, useEffect } from "react";
+import styled from "styled-components";
+
+
+const StyleDaysLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 15rem;
+  height: calc(16vh - 3.3rem);
+  background-color: ${(props) => props.theme.colors.mainColor};
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  margin: 3.3rem;
+  padding: 0.6rem;
+  border-radius: 1.5rem;
+  }
+`;
 
 const DaysLeft = () => {
   const [days, setDays] = useState(0);
-  const deadline = "March, 28, 2023";
+  const deadline = "April, 3, 2023";
   const getTime = () => {
     const time = Date.parse(deadline) - Date.now();
     setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
@@ -15,32 +35,13 @@ const DaysLeft = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        color: "white",
-        borderRadius: "15px",
-        backgroundColor: "blue",
-        display: "inline-block",
-        marginTop: "25px",
-        padding: "10px",
-        textAlign: "center",
-        width: "4rem",
-        alignItems: "left",
-      }}
-      role="timer"
-    >
-      <div style={{ width: "25%", float: "left" }}>
-        <div
-          style={{
-            borderRight: "solid 1px rgba(255, 255, 255, 0.2)",
-            fontWeight: "400",
-            padding: "10px",
-          }}
-        >
-          <p id="day">{days < 10 ? "0" + days : days}</p>
-        </div>
+    <StyleDaysLeft role="timer">
+      <p> You have</p>
+      <div >
+        <p id="day">{days < 10 ? "0" + days : days}</p>
       </div>
-    </div>
+      <p>days left</p>
+    </StyleDaysLeft>
   );
 };
 
