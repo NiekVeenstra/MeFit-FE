@@ -111,7 +111,7 @@ const SetGoals = () => {
                         <StyleParagraphlist>Status: {status}.</StyleParagraphlist>
                         <p> All workouts for your goal:</p>
                         {goals.map((workout, index) => {
-                            var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} updateProgress={updateProgress} /> : null;
+                            var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
 
                             return (
                                 <div key={index}>
