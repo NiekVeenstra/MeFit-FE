@@ -1,7 +1,6 @@
 const apiUrl = process.env.REACT_APP_API_WORKOUTS;
 
 
-
   export const getWorkouts = async () => {
     try {
       const response = await fetch(`${apiUrl}`);
@@ -30,5 +29,4 @@ const apiUrl = process.env.REACT_APP_API_WORKOUTS;
     }
   };
  
-
 

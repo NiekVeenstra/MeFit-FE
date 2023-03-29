@@ -19,7 +19,6 @@ const StyledApplicationFrameContainer = styled.div`
 const ApplicationFrame = () => {
   const decodedToken = decode(keycloak.token);
   const userName = decodedToken.name;
-
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {

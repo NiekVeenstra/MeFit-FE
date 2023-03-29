@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
 import styled from "styled-components";
 
+import Keycloak from "keycloak-js";
+import keycloak from "../../keycloak";
+
+
 const kCUsername = process.env.REACT_APP_KC_ADMIN_USERNAME;
 const kCPassword = process.env.REACT_APP_KC_ADMIN_PASSWORD;
 const kCGrantType = process.env.REACT_APP_KC_ADMIN_GRANTTYPE;
@@ -222,7 +226,7 @@ export const keycloakUpdateUserPassword = async (userId, newPassword) => {
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(10);
 
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
   const [userToUpdatePassword, setUserToUpdatePassword] = useState(null);
@@ -390,8 +394,8 @@ const AdminPage = () => {
               <StyledTh>Username</StyledTh>
               <StyledTh>First Name</StyledTh>
               <StyledTh>Last Name</StyledTh>
-              <StyledTh>Roles</StyledTh>
               <StyledTh>E-mail</StyledTh>
+              <StyledTh>Roles</StyledTh>
             </tr>
           </thead>
           <tbody>
