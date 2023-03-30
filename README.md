@@ -1,43 +1,51 @@
-# Getting Started with Create React App
+## Name
+MeFit App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+MeFit is an open-source fitness tracking and planning application designed to help users achieve their fitness goals through customizable workout plans, progress tracking, and an intuitive user interface. MeFit is accessible on web and mobile platforms.
 
-## Available Scripts
+## Features
+MeFit offers a wide range of features designed to make tracking and planning workouts simple and enjoyable:
 
-In the project directory, you can run:
+Add workout plans to set personal goals.
+Track progress through interactive progress bar and days tracking.
+Access a library of exercises.
+Support for multiple user accounts.
+Responsive design for web and mobile.
 
-### `npm start`
+## Project building
+### FrontEnd:
+1. Visual Studio Code
+2. React framework
+3. React MUI and bootstrapping
+4. Keycloak API for authentication
+5. Exercises are fetched from RapidApi
+6. Deploy with Netlify <br>
+### BackEnd:
+1. Visual Studio
+2. .NET desktop development
+3. PostgreSQL
+4. Deploy with Railway
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Prerequisites
+Getting Started <br>
+To get started with MeFit, you'll need to clone the repository, install the required dependencies, and run the application on your local machine.
+Before you begin, ensure you have the following installed on your system:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Node.js (v14.x or later)<br>
+npm (v7.x or later)
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Installation Instructions:
+1. Clone the repository: 
+(bash)
+git clone https://github.com/NiekVeenstra/me-fit-fe.git
+2. Change to the project directory:
+cd me-fit-fe
+3. Install the required dependencies:
+`npm install`
+4. Runs the app in the development mode:
+ `npm start`
+5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Learn More
 
@@ -45,27 +53,33 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### Usage
+1. Register for an account or sign in with your existing credentials.
+2. Begin by creating a new workout plan.
+3. Check the details of your exercises and how to tutorial.
+4. Track your progress using the interactive progress bar and countdown days left until your weekly goals are completed.
+5. Set new goals to keep yourself motivated every week.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Contributing
+MeFit welcomes contributions from the community. If you're interested in contributing, please follow these steps:
 
-### Analyzing the Bundle Size
+1. Fork the repository
+2. Create a new branch for your feature or bugfix (git checkout -b feature/your-feature or git checkout -b bugfix/your-bugfix)
+3. Commit your changes (git commit -m 'Add your feature')
+4. Push your branch to your forked repository (git push origin feature/your-feature or git push origin bugfix/your-bugfix)
+5. Create a new pull request from your branch to the original repository
+Please ensure you follow the project's code style and include tests for any new features or bug fixes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Main Contributors:
 
-### Making a Progressive Web App
+Niek Veenstra - https://www.linkedin.com/in/niek-veenstra-0181/ <br>
+Niels van Mierlo - https://www.linkedin.com/in/niels-van-mierlo-3b288a173/ <br>
+Ahmad Khodabaks - https://www.linkedin.com/in/ahmad-khodabaks/
+<br>
+Meg Stefouli - https://www.linkedin.com/in/meg-stefuli-b5310a13/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### License
+MeFit is released under the MIT License. For more information, please refer to the LICENSE file in the repository.
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
+### Project status
+This project is a Case study .NET Fullstack – January/March 2023 for Experis Academy and Noroff School.
