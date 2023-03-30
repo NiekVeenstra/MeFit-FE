@@ -132,7 +132,7 @@ const ProfileCreationForm = () => {
           <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
         </StyledLabel>
         <StyledLabel>
-          Height:
+          Height (cm):
           <input
             type="number"
             defaultValue={height}
@@ -140,7 +140,7 @@ const ProfileCreationForm = () => {
           />
         </StyledLabel>
         <StyledLabel>
-          Weight:
+          Weight (kg):
           <input
             type="number"
             defaultValue={weight}

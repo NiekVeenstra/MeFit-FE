@@ -1,100 +1,114 @@
-import React, { useState, useEffect } from 'react';
-import { Button, List, ListItem, ListItemText } from '@mui/material';
-import { useListCheck } from '../../context/UserContext';
+import React, { useState, useEffect } from "react";
+import { Button, List, ListItem, ListItemText } from "@mui/material";
+import { useListCheck, useWorkout } from "../../context/UserContext";
+import styled from "styled-components";
 
-const EXERCISES_API_URL = 'https://exercisedb.p.rapidapi.com/exercises/';
-const GOALS_API_URL = 'https://mefitapi-production.up.railway.app/api/Workouts';
+const StyledContainer = styled.div`
+  border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
+`;
+
+const StyledUl = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledOuterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const WorkoutList = () => {
   const [workouts, setWorkouts] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]);
+
   const { listWorkout, setListWorkout } = useListCheck();
+  const { saveWorkout, setSaveWorkout } = useWorkout();
+  const [selectedNames, setSelectedNames] = useState([]);
 
-  useEffect(() => {
-    // Fetch the exercises from the API
-    fetch(EXERCISES_API_URL, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-        'x-rapidapi-key': process.env.REACT_APP_RAPID_API_KEY // Replace with your RapidAPI key
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Shuffle the exercises array
-        const shuffledExercises = data.sort(() => 0.5 - Math.random());
-        // Take the first 3 exercises of each workout
-        const workouts = shuffledExercises.slice(0, Math.min(shuffledExercises.length, 21)).reduce((acc, val, i, arr) => {
-          if (i % 3 === 0) {
-            acc.push(arr.slice(i, i + 3));
-          }
-          return acc;
-        }, []);
-        setWorkouts(workouts);
-      })
-      .catch(error => console.error(error));
-  }, []);
+  const workoutsTest = [
+    {
+      name: "workout 1",
+      names: [
+        { title: "Deadlift", complete: false },
+        { title: "3/4 Sit-up", complete: false },
+        { title: "Air bike", complete: false },
+      ],
+    },
+    {
+      name: "workout 2",
+      names: [
+        { title: "Back pec stretch", complete: false },
+        { title: "Band wrist curl", complete: false },
+        { title: "Arnold press", complete: false },
+        { title: "Dumbbells", complete: false },
+      ],
+    },
+    {
+      name: "workout 3",
+      names: [
+        { title: "Backward jump", complete: false },
+        { title: "Dumbbells", complete: false },
+        { title: "Incline close-grip", complete: false },
+        { title: "Deadlift", complete: false },
+      ],
+    },
+    {
+      name: "workout 4",
+      names: [
+        { title: "Back and forth step", complete: false },
+        { title: "Neck stretch", complete: false },
+        { title: "Sit-up", complete: false },
+      ],
+    },
+  ];
 
-  const handleExerciseClick = (exercise) => {
-    // Check if the exercise is already selected
-    if (!selectedExercises.includes(exercise)) {
-      // Check if we have already selected 7 exercises
-      if (selectedExercises.length < 7) {
-        setSelectedExercises([...selectedExercises, exercise]);
-      } else {
-        alert('You can only select up to 7 exercises');
-      }
-    } else {
-      setSelectedExercises(selectedExercises.filter(e => e !== exercise));
-    }
-  }
+  const handleClick = (name) => {
+    setSelectedNames(name);
+  };
 
-  const handleSaveClick = () => {
-
+  const handleSaveClick2 = () => {
     setListWorkout(false);
-    // Save the selected exercises to the user database
-    fetch(GOALS_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        exercises: selectedExercises
-      })
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-    // Clear the selection
-    setSelectedExercises([]);
-  }
+    setSaveWorkout(selectedNames);
+  };
 
   return (
-    <div>
+    <StyledOuterContainer>
       <List>
-        {workouts.map((workout, i) => (
-          <ListItem key={i}>
-            <ListItemText primary={`Workout ${i + 1}`} />
-            <List>
-              {workout.map((exercise, j) => (
-                <ListItem
-                  key={`${i}-${j}`}
-                  button
-                  selected={selectedExercises.includes(exercise)}
-                  onClick={() => handleExerciseClick(exercise)}
-                >
-                  <ListItemText primary={exercise.name} />
-                </ListItem>
-              ))}
-            </List>
-          </ListItem>
-
+        {workoutsTest.map((workout, index) => (
+          <StyledContainer key={`workout-${index}`}>
+            <ListItem button onClick={() => handleClick(workout.names)}>
+              {workout.name}
+              <List>
+                {workout.names.map((nameItem, index) => (
+                  <ListItem
+                  key={`workout-${index}-exercise-${index}`}
+                    style={{
+                      textDecoration: nameItem.completed ? "line-through" : "none",
+                    }}
+                  >
+                    {nameItem.title}
+                  </ListItem>
+                ))}
+              </List>
+            </ListItem>
+          </StyledContainer>
         ))}
       </List>
-      {selectedExercises.length > 0 && (
-        <Button variant="contained" color="primary" onClick={handleSaveClick}>Save</Button>
+      <h3>Selected Exercises:</h3>
+      <StyledUl>
+        {selectedNames.map((nameItem, index) => (
+          <li key={index}>{nameItem.title}</li>
+        ))}
+      </StyledUl>
+      {selectedNames.length > 0 && (
+        <Button variant="contained" color="primary" onClick={handleSaveClick2}>
+          Save
+        </Button>
       )}
-    </div>
+    </StyledOuterContainer>
   );
 };
 

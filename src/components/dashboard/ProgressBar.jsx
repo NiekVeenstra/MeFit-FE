@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { getWorkouts } from '../../api/apiCall/workouts';
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useWorkout } from "../../context/UserContext";
 
 const StyleProgressBar = styled.div`
   display: flex;
@@ -16,21 +16,23 @@ const StyleProgressBar = styled.div`
   margin: 0.1rem;
   padding: 0.6rem;
   border-radius: 1.5rem;
-  }
 `;
 function ProgressBar() {
   const [completedPercentage, setCompletedPercentage] = useState(0);
+  const { saveWorkout, setSaveWorkout } = useWorkout();
 
-  const fetchData = async () => {
-    const data = await getWorkouts();
-    console.log(data);
-    const completedWorkouts = data.filter((workouts) => workouts.complete === true);
-    const percentage = (completedWorkouts.length / data.length) * 100;
-    setCompletedPercentage(percentage);
-  }
+  const finishedWorkoutCheck = () => {
+    if (saveWorkout.length === 0) {
+      console.log("empty");
+    } else {
+      const finishWorkout = saveWorkout.filter((workout) => (workout.complete === true))
+      setCompletedPercentage(finishWorkout.length / saveWorkout.length * 100)
+    }
+  };
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    finishedWorkoutCheck();
+  }, [saveWorkout]);
   return (
     <StyleProgressBar>
       <p>Completed: {completedPercentage.toFixed(2)}%</p>

@@ -1,14 +1,11 @@
 import React from "react";
 import Button2 from "../button";
-import { useState, useEffect } from "react";
-import { getWorkouts } from '../../api/apiCall/workouts'
-import { updateWorkout } from '../../api/apiCall/updateWorkout'
-import { useGoals, useListCheck } from "../../context/UserContext";
+import { useState } from "react";
+import { getWorkouts } from "../../api/apiCall/workouts";
+import { updateWorkout } from "../../api/apiCall/updateWorkout";
+import { useListCheck, useWorkout } from "../../context/UserContext";
 import WorkoutList from "../goalsDashboard/WorkoutList";
-import ProgramsList from "../goalsDashboard/ProgramsList";
-import { Button } from '@mui/material';
 import styled from "styled-components";
-
 
 const ShowDetailsButton = styled.button`
   color: ${(props) => props.theme.colors.white};
@@ -42,105 +39,154 @@ const StyleCompletedlist = styled.div`
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
-  h3, p {
+  h3,
+  p {
     margin: 2rem;
-}
+  }
 `;
 const StylelistedGoals = styled.div`
   border: 1px solid ${(props) => props.theme.colors.mainColor};
   padding: 2rem;
   border-radius: 1.5rem;
-  `;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+  margin-bottom: 3rem;
+`;
 const StyleDivComplete = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
-  `;
+`;
 const StyleParagraphlist = styled.p`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid ${(props) => props.theme.colors.mainColor};
- 
-    margin: 2rem;
-    `;
+  margin: 2rem;
+`;
+
+const StyledButton = styled.button`
+  color: ${(props) => props.theme.colors.white};
+  padding: 0.6rem;
+  border-radius: 15px;
+  width: 8rem;
+  background-color: ${(props) => props.theme.colors.mainColor};
+  align-self: center;
+  margin-top: 1rem;
+`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledDivContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const SetGoals = () => {
-    const days = "from Monday March 27th 2023 to Sunday April 2nd 2023";
-    const status = "in progress";
-    // const goals = [];
-    const [goals, setGoals] = useState([])
-    const fetchData = async () => {
-        const workoutGoals = await getWorkouts();
-        setGoals(workoutGoals);
+  const days = "from Monday March 27th 2023 to Sunday April 2nd 2023";
+  const status = "in progress";
+  const [goals, setGoals] = useState([]);
+  const fetchData = async () => {
+    const workoutGoals = await getWorkouts();
+    setGoals(workoutGoals);
+  };
 
-    };
+  const ShowAllWorkouts = () => {
+    const { listWorkout, setListWorkout } = useListCheck(false);
+    const { saveWorkout, setSaveWorkout } = useWorkout();
+    if (saveWorkout.length === 0) {
+      return (
+        <StyledDivContainer>
+          <>
+            <h3>You have no workouts yet!</h3>
+            <p>Click the button below to add a new workouts or a full program!</p>
+            <StyledButton variant="contained" onClick={() => setListWorkout(!listWorkout)}>
+              View Workout List
+            </StyledButton>{" "}
+            {listWorkout && <WorkoutList />}
+          </>
+        </StyledDivContainer>
+      );
+    } else {
+      const workoutsLeft = saveWorkout.filter((workout) => workout.complete === false);
 
-    const ShowAllWorkouts = () => {
-        const { listWorkout, setListWorkout } = useListCheck(false);
-        if (goals.length === 0) {
-
-            return (
-                <div>
-                    <>
-                        <h3>You have no workouts yet!</h3>
-                        <p>Click the button below to add a new workouts or a full program!</p>
-                        <button variant="contained" onClick={() => setListWorkout(true)}>View Workout List</button> {/* add a button to call the WorkoutList function */}
-                        {listWorkout && <WorkoutList />}
-                    </>
-                </div>
-            );
-        } else {
-            return (
-                <StyleGoalslist>
-                    <h3>You have {goals.length} workouts!</h3>
-                </StyleGoalslist>
-            );
-        }
-    };
-    function GoalList() {
-        const [showDetails, setShowDetails] = useState(false);
-        // your code for rendering the list of goals goes here
-        return (
-            <div>
-                <ShowDetailsButton onClick={() => setShowDetails(prevState => !prevState)}>Show details</ShowDetailsButton>
-                {showDetails && (
-                    <StylelistedGoals>
-                        {/* your code for rendering the details of all goals goes here */}
-                        <StyleParagraphlist>PERIOD: {days}.</StyleParagraphlist>
-                        <StyleParagraphlist>Status: {status}.</StyleParagraphlist>
-                        <p> All workouts for your goal:</p>
-                        {goals.map((workout, index) => {
-                            var ShowButton = !workout.complete ? <Button2 item={workout.id} getWorkouts={getWorkouts} updateWorkout={updateWorkout} /> : null;
-
-                            return (
-                                <div key={index}>
-                                    <StyleCompletedlist>
-                                        <StyleDivComplete>
-                                            <h3>{workout.name}</h3>
-                                            <p>{workout.complete ? "Completed" : "Not Completed"}</p>
-                                        </StyleDivComplete>
-                                        {ShowButton}
-                                    </StyleCompletedlist>
-                                </div>
-                            );
-                        })}
-                        <p>The reference to the users previously achieved goals</p>
-                    </StylelistedGoals>
-                )}
-            </div>
-        );
+      return (
+        <StyleGoalslist>
+          <h3>You have {workoutsLeft.length} workouts!</h3>
+        </StyleGoalslist>
+      );
     }
-    useEffect(() => {
-        fetchData();
-    }, []);
+  };
+  function GoalList() {
+    const [showDetails, setShowDetails] = useState(false);
+    const { saveWorkout, setSaveWorkout } = useWorkout();
+    const workoutsLeft = saveWorkout.filter((workout) => workout.complete === false);
+
+    const FinishExercise = () => {
+      setSaveWorkout([]);
+    };
+
     return (
-        <div>
-            <div>
-                <ShowAllWorkouts />
-                {<GoalList />}
-            </div>
-        </div>
+      <StyledDivContainer>
+        {saveWorkout.length !== 0 && (
+          <ShowDetailsButton onClick={() => setShowDetails((prevState) => !prevState)}>
+            Show details
+          </ShowDetailsButton>
+        )}
+        {showDetails && (
+          <StylelistedGoals>
+            <StyleParagraphlist>PERIOD: {days}.</StyleParagraphlist>
+            <StyleParagraphlist>Status: {workoutsLeft.length === 0 ? "completed" : "in progress"}.</StyleParagraphlist>
+            <p> All workouts for your goal:</p>
+            {saveWorkout.map((workout, index) => {
+              var ShowButton = !workout.complete ? (
+                <Button2
+                  index={index}
+                  item={workout.id}
+                  getWorkouts={getWorkouts}
+                  updateWorkout={updateWorkout}
+                />
+              ) : null;
+              return (
+                <div key={index}>
+                  <StyleCompletedlist>
+                    <StyleDivComplete>
+                      <h3>{workout.title}</h3>
+                      <p>{workout.complete ? "Completed" : "Not Completed"}</p>
+                    </StyleDivComplete>
+                    {ShowButton}
+                  </StyleCompletedlist>
+                </div>
+              );
+            })}
+            {workoutsLeft.length === 0 && (
+              <StyledButton
+                onClick={() => {
+                  FinishExercise();
+                  setShowDetails(false)
+                }}
+              >
+                Finish
+              </StyledButton>
+            )}
+          </StylelistedGoals>
+        )}
+      </StyledDivContainer>
     );
+  }
+  return (
+    <div>
+      <StyledContainer>
+        <ShowAllWorkouts />
+        <GoalList />
+      </StyledContainer>
+    </div>
+  );
 };
 export default SetGoals;
